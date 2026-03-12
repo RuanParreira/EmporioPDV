@@ -13,13 +13,19 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
     <link rel="manifest" href="{{ asset('site.webmanifest') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
     <title>@yield('title')</title>
 </head>
 
 <body class="bg-background">
-    <main>
-        @yield('content')
+    <main
+        class="mt-18 w-full overflow-y-auto transition-all duration-300 lg:mt-0 lg:ml-64 lg:h-screen lg:w-[calc(100%-16rem)]">
+        <livewire:menu />
+        <div class="p-6 space-y-6">
+            @yield('content')
+        </div>
     </main>
+    @livewireScripts
 </body>
 
 </html>

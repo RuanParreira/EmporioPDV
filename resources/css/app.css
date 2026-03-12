@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 @import "bootstrap-icons/font/bootstrap-icons.css";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -8,16 +8,26 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@theme {
-    --font-sans: 'Nunito', sans-serif;
+/* * {
+    outline: 1px solid red;
+} */
 
-    --color-primary: #451A5B;
+@theme {
+    --font-sans: "Nunito", sans-serif;
+
+    --color-primary: #451a5b;
     --color-background: oklch(96.7% 0.001 286.375);
     --color-description: oklch(55.1% 0.027 264.364);
     --color-border: oklch(87.2% 0.01 258.338);
-    --color-input: #F7F6F8;
+    --color-input: #f7f6f8;
 }
 
+@layer components {
+    .item-menu {
+        @apply flex items-center gap-3 px-3 py-2.5 rounded-2xl text-description hover:bg-primary/40 hover:text-purple-950 transition-colors;
+    }
 
-
-
+    .item-menu-active {
+        @apply flex items-center gap-3 px-3 py-2.5 rounded-xl bg-primary text-white shadow-sm hover:bg-primary hover:text-white;
+    }
+}
