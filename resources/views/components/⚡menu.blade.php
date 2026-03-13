@@ -37,7 +37,7 @@ new class extends Component {
 
         <nav class="flex-1 px-2 py-2 space-y-4">
 
-            <a href="{{ route('dashboard') }}" @class([
+            <a href="/dashboard" wire:navigate @class([
                 'item-menu',
                 'item-menu-active' => request()->routeIs('dashboard'),
             ])>
@@ -56,7 +56,10 @@ new class extends Component {
                 <span class="font-medium text-sm">Produtos</span>
             </a>
 
-            <a href="#" @class(['item-menu', 'item-menu-active' => request()->routeIs('#')])>
+            <a href="/categories" wire:navigate @class([
+                'item-menu',
+                'item-menu-active' => request()->routeIs('categories'),
+            ])>
                 <i class="bi bi-tags text-xl"></i>
                 <span class="font-medium text-sm">Categorias</span>
             </a>

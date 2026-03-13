@@ -14,16 +14,18 @@
     <link rel="manifest" href="{{ asset('site.webmanifest') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
-    <title>@yield('title')</title>
+    <title>{{ $title ?? trim($__env->yieldContent('title')) }}</title>
 </head>
 
 <body class="bg-background">
     <main
-        class="mt-18 w-full overflow-y-auto transition-all duration-300 lg:mt-0 lg:ml-64 lg:h-screen lg:w-[calc(100%-16rem)]">
+        class="mt-18 w-full overflow-y-auto transition-all duration-300 lg:mt-0 lg:ml-64 lg:h-screen lg:w-[calc(100%-16rem)] p-6 space-y-6">
         <livewire:menu />
-        <div class="p-6 space-y-6">
+        @isset($slot)
+            {{ $slot }}
+        @else
             @yield('content')
-        </div>
+        @endisset
     </main>
     @livewireScripts
 </body>

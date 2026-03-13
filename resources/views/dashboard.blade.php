@@ -1,13 +1,7 @@
 @extends('layouts.default')
 @section('title', 'DashBoard')
 @section('content')
-    <div class="flex flex-col">
-        <div class="flex items-center">
-            <i class=" text-3xl text-violet-500"></i>
-            <h2 class="text-3xl font-bold">DashBoard</h2>
-        </div>
-        <p class="text-gray-400">Visão geral do seu negócio</p>
-    </div>
+    <x-titulo titulo="DashBoard" descricao="Visão geral do seu negócio" />
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {{-- Card 1 --}}
@@ -99,5 +93,4 @@
     {{-- <div class="grid grid-cols-2 gap-4">
     </div> --}}
     <livewire:grafico />
-
 @endsection
