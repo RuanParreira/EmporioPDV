@@ -9,6 +9,9 @@
         </button>
     </div>
 
+    @error('delete')
+        <div class="text-red-500 text-sm mt-2">{{ $message }}</div>
+    @enderror
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div class="bg-white rounded-xl shadow-md p-5 flex items-center gap-4">
             <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-purple-500/10 text-purple-500">

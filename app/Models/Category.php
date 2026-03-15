@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
+    const DEFAULT_NAME = 'SemCategoria';
     protected $fillable = [
         'name'
     ];

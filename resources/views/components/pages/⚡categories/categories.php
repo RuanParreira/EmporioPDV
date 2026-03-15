@@ -2,12 +2,13 @@
 
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Illuminate\Support\Facades\Gate;
 
 new class extends Component {
-    public $categories = [];
+    public Collection $categories;
     public int $totalCategories = 0;
     public int $totalProducts = 0;
     public string $topCategory = '-';
@@ -20,31 +21,31 @@ new class extends Component {
         ]);
     }
 
-    //Buscar as Categorias
-    private function loadCategories(): void
-    {
-        $this->categories = Category::query()
-            ->withCount('products')
-            ->where(function ($query) {
-                $query->where('name', '!=', 'SemCategoria')
-                    ->orWhere(function ($q) {
-                        $q->where('name', 'SemCategoria')->whereHas('products');
-                    });
-            })
-            ->orderBy('name')
-            ->get();
-
-        $this->totalCategories = Category::where('name', '!=', 'SemCategoria')->count();
-        $this->totalProducts = Product::count();
-
-        $top = Category::withCount('products')->where('name', '!=', 'SemCategoria')->orderByDesc('products_count')->first();
-
-        $this->topCategory = $top && $top->products_count > 0 ? "{$top->name} ({$top->products_count})" : '-';
-    }
 
     public function mount(): void
     {
+        // Agora o loadCategories vai preencher a Collection
         $this->loadCategories();
+    }
+    //Buscar as Categorias
+    private function loadCategories(): void
+    {
+        // Listagem para os cards
+        $this->categories = Category::query()
+            ->withCount('products')
+            ->where('name', '!=', Category::DEFAULT_NAME)
+            ->orWhere(fn($q) => $q->where('name', Category::DEFAULT_NAME)->has('products'))
+            ->orderBy('name')
+            ->get();
+
+        // Estatísticas (calculadas a partir da coleção já carregada para poupar banco)
+        $this->totalProducts = Product::count();
+        $this->totalCategories = $this->categories->where('name', '!=', Category::DEFAULT_NAME)->count();
+
+        $top = $this->categories->sortByDesc('products_count')->first();
+        $this->topCategory = ($top && $top->products_count > 0)
+            ? "{$top->name} ({$top->products_count})"
+            : '-';
     }
 
     // Deletar Categoria
@@ -54,7 +55,7 @@ new class extends Component {
         Gate::authorize('delete', $category);
 
         $defaultCategory = Category::firstOrCreate([
-            'name' => 'SemCategoria',
+            'name' => Category::DEFAULT_NAME,
         ]);
 
         if ($category->id === $defaultCategory->id) {
