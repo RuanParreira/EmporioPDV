@@ -56,7 +56,7 @@ new class extends Component {
 
             <a href="/products" wire:navigate @class([
                 'item-menu',
-                'item-menu-active' => request()->routeIs('prducts'),
+                'item-menu-active' => request()->routeIs('products'),
             ])>
                 <i class="bi bi-archive text-xl"></i>
                 <span class="font-medium text-sm">Produtos</span>
