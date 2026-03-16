@@ -16,4 +16,9 @@ Route::controller(LoginController::class)->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::livewire('/categories', 'pages.categories')->name('categories');
+    Route::livewire('/caixa', 'pages.caixa')->name('caixa');
+    Route::livewire('/products', 'pages.products')->name('products');
+    Route::livewire('/users', 'pages.users')->name('users');
+    Route::livewire('/sales', 'pages.sales')->name('sales');
+    Route::livewire('/config', 'pages.config')->name('config');
 });

@@ -20,9 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // O Owner tem acesso a tudo no sistema
+        // O dev tem acesso a tudo no sistema
         Gate::before(function ($user, $ability) {
-            if ($user->role === 'owner') {
+            if ($user->role === 'dev') {
                 return true;
             }
         });

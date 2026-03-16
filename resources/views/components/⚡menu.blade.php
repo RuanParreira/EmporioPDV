@@ -45,13 +45,19 @@ new class extends Component {
                 <span class="font-medium text-sm">Dashboard</span>
             </a>
 
-            <a href="#" @class(['item-menu', 'item-menu-active' => request()->routeIs('#')])>
+            <a href="/caixa" wire:navigate @class([
+                'item-menu',
+                'item-menu-active' => request()->routeIs('caixa'),
+            ])>
                 <i class="bi bi-cart text-xl"></i>
                 <span class="font-medium text-sm">Caixa</span>
             </a>
 
 
-            <a href="#" @class(['item-menu', 'item-menu-active' => request()->routeIs('#')])>
+            <a href="/products" wire:navigate @class([
+                'item-menu',
+                'item-menu-active' => request()->routeIs('prducts'),
+            ])>
                 <i class="bi bi-archive text-xl"></i>
                 <span class="font-medium text-sm">Produtos</span>
             </a>
@@ -64,12 +70,18 @@ new class extends Component {
                 <span class="font-medium text-sm">Categorias</span>
             </a>
 
-            <a href="#" @class(['item-menu', 'item-menu-active' => request()->routeIs('#')])>
+            <a href="/users" wire:navigate @class([
+                'item-menu',
+                'item-menu-active' => request()->routeIs('users'),
+            ])>
                 <i class="bi bi-people text-xl"></i>
                 <span class="font-medium text-sm">Usuários</span>
             </a>
 
-            <a href="#" @class(['item-menu', 'item-menu-active' => request()->routeIs('#')])>
+            <a href="/sales" wire:navigate @class([
+                'item-menu',
+                'item-menu-active' => request()->routeIs('sales'),
+            ])>
                 <i class="bi bi-wallet text-xl"></i>
                 <span class="font-medium text-sm">Vendas</span>
             </a>
@@ -77,7 +89,10 @@ new class extends Component {
             {{-- Configurações --}}
             <hr class="my-3 border-slate-200 mx-3">
 
-            <a href="#" @class(['item-menu', 'item-menu-active' => request()->routeIs('#')])>
+            <a href="/config" wire:navigate @class([
+                'item-menu',
+                'item-menu-active' => request()->routeIs('config'),
+            ])>
                 <i class="bi bi-gear text-xl"></i>
                 <span class="font-medium text-sm">Configurações</span>
             </a>

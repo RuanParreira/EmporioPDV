@@ -13,7 +13,7 @@ class Titulo extends Component
      */
     public function __construct(
         public string $titulo,
-        public string $descricao,
+        public ?string $descricao,
     ) {}
 
     /**

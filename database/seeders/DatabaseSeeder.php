@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Category;
+use App\Models\Product;
+use App\Models\Sale;
+use App\Models\SaleItem;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,26 +19,42 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::factory(20)->create();
+
+        // Cria 30 categorias e, PARA CADA categoria criada, cria automaticamente 5 produtos.
+        Category::factory(30)->has(Product::factory()->count(5))->create();
 
         Category::firstOrCreate(['name' => 'SemCategoria']);
 
         User::factory()->create([
-            'name' => 'test',
+            'name' => 'dev',
             'email' => 'test@test.com',
             'password' => 'Password@123',
-            'role' => 'dono'
+            'role' => 'dev'
+        ]);
+
+        User::factory()->create([
+            'name' => 'owner',
+            'email' => 'owner@owner.com',
+            'password' => 'Password@123',
+            'role' => 'owner'
         ]);
         User::factory()->create([
             'name' => 'adm',
             'email' => 'adm@adm.com',
             'password' => 'Password@123',
-            'role' => 'adm'
+            'role' => 'admin'
         ]);
         User::factory()->create([
             'name' => 'caixa',
             'email' => 'caixa@caixa.com',
             'password' => 'Password@123'
         ]);
+
+        $caixa = User::where('name', 'caixa')->first();
+        Sale::factory(20)
+            ->for($caixa)
+            ->has(SaleItem::factory()->count(rand(1, 4)), 'items')
+            ->create();
     }
 }

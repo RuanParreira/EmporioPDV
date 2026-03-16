@@ -37,7 +37,7 @@ class UserPolicy
     public function update(User $user, User $model): bool
     {
         //Se quem está logado NÃO for admin, já bloqueia na hora.
-        if ($user->role !== 'admin') {
+        if (!in_array($user->role, ['admin', 'owner'])) {
             return false;
         }
 
@@ -51,7 +51,7 @@ class UserPolicy
     public function delete(User $user, User $model): bool
     {
         // Apenas admins podem deletar usuários.
-        if ($user->role !== 'admin') {
+        if (!in_array($user->role, ['admin', 'owner'])) {
             return false;
         }
 

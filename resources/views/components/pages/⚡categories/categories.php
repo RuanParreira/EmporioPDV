@@ -1,55 +1,54 @@
 <?php
 
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
+use Livewire\Attributes\Computed;
+use Livewire\WithPagination;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Illuminate\Support\Facades\Gate;
+use Livewire\Attributes\On;
 
-new class extends Component {
-    public Collection $categories;
+new #[Layout('layouts.default')] #[Title('Lista de Categorias')] class extends Component {
+    use WithPagination;
+
     public int $totalCategories = 0;
     public int $totalProducts = 0;
     public string $topCategory = '-';
 
-    // Rederizar a pagina
-    public function render()
-    {
-        return $this->view()->layout('layouts.default', [
-            'title' => 'Categorias',
-        ]);
-    }
-
-
     public function mount(): void
     {
-        // Agora o loadCategories vai preencher a Collection
-        $this->loadCategories();
+        $this->loadStats();
     }
+
     //Buscar as Categorias
-    private function loadCategories(): void
+    #[On('category-saved')]
+    public function loadStats(): void
     {
-        // Listagem para os cards
-        $this->categories = Category::query()
-            ->withCount('products')
-            ->where('name', '!=', Category::DEFAULT_NAME)
-            ->orWhere(fn($q) => $q->where('name', Category::DEFAULT_NAME)->has('products'))
-            ->orderBy('name')
-            ->get();
-
-        // Estatísticas (calculadas a partir da coleção já carregada para poupar banco)
         $this->totalProducts = Product::count();
-        $this->totalCategories = $this->categories->where('name', '!=', Category::DEFAULT_NAME)->count();
+        $this->totalCategories = Category::where('name', '!=', Category::DEFAULT_NAME)->count();
 
-        $top = $this->categories->sortByDesc('products_count')->first();
+        $top = Category::withCount('products')->orderByDesc('products_count')->first();
         $this->topCategory = ($top && $top->products_count > 0)
             ? "{$top->name} ({$top->products_count})"
             : '-';
     }
 
-    // Deletar Categoria
+    #[Computed]
+    public function categories()
+    {
+        return Category::query()
+            ->withCount('products')
+            ->where('name', '!=', Category::DEFAULT_NAME)
+            ->orWhere(fn($q) => $q->where('name', Category::DEFAULT_NAME)->has('products'))
+            ->orderBy('id')
+            ->paginate(18); // <-- Paginação com 18 itens
+    }
 
+    // Deletar Categoria
     public function delete(Category $category): void
     {
         Gate::authorize('delete', $category);
@@ -71,6 +70,6 @@ new class extends Component {
             $category->delete();
         });
 
-        $this->loadCategories();
+        $this->loadStats();
     }
 };
