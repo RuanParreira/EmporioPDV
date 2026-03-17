@@ -18,7 +18,7 @@ new #[Layout('layouts.default')] #[Title('Lista de Usuários')] class extends Co
     #[Computed]
     public function users()
     {
-        return User::query()->orderByDesc('id')->paginate(9);
+        return User::query()->where('role', '!=', 'dev')->orderByDesc('id')->paginate(9);
     }
 
     // Deletar um user

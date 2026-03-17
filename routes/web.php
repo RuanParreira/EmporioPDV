@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\DashboardController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 // Rota de Login
@@ -18,7 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::livewire('/categories', 'pages.categories')->name('categories');
     Route::livewire('/caixa', 'pages.caixa')->name('caixa');
     Route::livewire('/products', 'pages.products')->name('products');
-    Route::livewire('/users', 'pages.users')->name('users');
+    Route::livewire('/users', 'pages.users')->middleware('can:viewAny,' . User::class)->name('users');
     Route::livewire('/sales', 'pages.sales')->name('sales');
     Route::livewire('/config', 'pages.config')->name('config');
 });

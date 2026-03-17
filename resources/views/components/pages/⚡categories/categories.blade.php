@@ -20,7 +20,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="bg-white rounded-xl shadow-md p-5 flex items-center gap-4">
                 <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-purple-500/10 text-purple-500">
-                    <i class="bi bi-grid-3x3-gap text-2xl"></i>
+                    <i class="bi bi-grid text-2xl"></i>
                 </div>
                 <div>
                     <p class="text-xs font-semibold text-description uppercase tracking-wide">Total de Categorias</p>
@@ -29,7 +29,7 @@
             </div>
             <div class="bg-white rounded-xl shadow-md p-5 flex items-center gap-4">
                 <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-500/10 text-blue-500">
-                    <i class="bi bi bi-clipboard-check text-2xl"></i>
+                    <i class="bi bi-box-seam text-2xl"></i>
                 </div>
                 <div>
                     <p class="text-xs font-semibold text-description uppercase tracking-wide">Total de Produtos</p>
@@ -38,7 +38,7 @@
             </div>
             <div class="bg-white rounded-xl shadow-md p-5 flex items-center gap-4">
                 <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-green-500/10 text-green-500">
-                    <i class="bi bi-bag-heart text-2xl"></i>
+                    <i class="bi bi-tags text-2xl"></i>
                 </div>
                 <div>
                     <p class="text-xs font-semibold text-description uppercase tracking-wide">Categoria com mais

@@ -50,9 +50,9 @@
                         <td class="p-4 align-middle">
                             @php
                                 [$badgeClass, $iconClass] = match ($user->role) {
-                                    'owner' => ['bg-purple-500/10 text-purple-600', 'bi bi-stars'],
-                                    'admin' => ['bg-blue-500/10 text-blue-600', 'bi bi-shield-check'],
-                                    default => ['bg-yellow-500/10 text-yellow-600', 'bi bi-shop-window'],
+                                    'owner' => ['bg-purple-500/10 w-18 text-purple-600', 'bi bi-stars'],
+                                    'admin' => ['bg-blue-500/10 w-18 text-blue-600', 'bi bi-shield-check'],
+                                    default => ['bg-yellow-500/10 w-18 text-yellow-600', 'bi bi-shop-window'],
                                 };
                             @endphp
 
@@ -64,7 +64,7 @@
                         </td>
                         <td class="p-4 text-right space-x-2 align-middle">
                             @can('update', $user)
-                                <button
+                                <button x-on:click="$dispatch('open-user-modal', { id: {{ $user->id }} })"
                                     class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/20 hover:text-purple-950 h-10 w-10 rounded-lg hover:cursor-pointer">
                                     <i class="bi bi-pen text-md"></i>
                                 </button>

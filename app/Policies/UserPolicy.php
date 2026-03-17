@@ -12,7 +12,7 @@ class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return in_array($user->role, ['admin', 'owner']);
     }
 
     /**
@@ -28,7 +28,7 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->role === 'admin';
+        return in_array($user->role, ['admin', 'owner']);
     }
 
     /**
@@ -36,13 +36,19 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        //Se quem está logado NÃO for admin, já bloqueia na hora.
+        if ($model->role === 'dev') {
+            return false;
+        }
+
         if (!in_array($user->role, ['admin', 'owner'])) {
             return false;
         }
 
-        //O Admin só pode editar se o alvo da edição NÃO for o Owner.
-        return $model->role !== 'owner';
+        if ($user->role === 'admin' && $model->role === 'owner') {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -50,13 +56,19 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        // Apenas admins podem deletar usuários.
+        if ($model->role === 'dev') {
+            return false;
+        }
+
         if (!in_array($user->role, ['admin', 'owner'])) {
             return false;
         }
 
-        // Um Admin NUNCA pode deletar o Owner.
-        return $model->role !== 'owner';
+        if ($user->role === 'admin' && $model->role === 'owner') {
+            return false;
+        }
+
+        return true;
     }
 
     /**

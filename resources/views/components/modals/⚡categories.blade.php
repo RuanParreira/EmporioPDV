@@ -14,7 +14,7 @@ new class extends Component {
     #[On('open-category-modal')]
     public function openModal(?int $id = null): void
     {
-        $this->reset(['name', 'categoryId']);
+        $this->reset();
         $this->resetValidation();
 
         if ($id) {
@@ -62,8 +62,8 @@ new class extends Component {
 ?>
 
 <div>
-    <div x-data="{ open: @entangle('showModal') }" @open-category-modal.window="open = true" x-show="open"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4" style="display: none;">
+    <div x-data="{ open: @entangle('showModal') }" x-show="open" class="fixed inset-0 z-50 flex items-center justify-center p-4"
+        style="display: none;">
         {{-- Overlay (Fundo Escuro) --}}
         <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-50"
