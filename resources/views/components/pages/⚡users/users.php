@@ -1,8 +1,8 @@
 <?php
 
+use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
-use Livewire\Component;
 use App\Models\User;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Auth;

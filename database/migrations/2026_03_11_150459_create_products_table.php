@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('price', 10, 2); // 10 dígitos totais, 2 casas decimais
             $table->string('measure_unit', 2)->default('UN'); // UN ou KG
             $table->boolean('active')->default(true); // Produto começa ativo
+            $table->softDeletes();
             $table->timestamps();
         });
     }

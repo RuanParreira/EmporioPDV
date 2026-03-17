@@ -62,15 +62,17 @@ new class extends Component {
                 <span class="font-medium text-sm">Produtos</span>
             </a>
 
-            <a href="/categories" wire:navigate @class([
-                'item-menu',
-                'item-menu-active' => request()->routeIs('categories'),
-            ])>
-                <i class="bi bi-tags text-xl"></i>
-                <span class="font-medium text-sm">Categorias</span>
-            </a>
+            @can('viewAny', \App\Models\Category::class)
+                <a href="/categories" wire:navigate @class([
+                    'item-menu',
+                    'item-menu-active' => request()->routeIs('categories'),
+                ])>
+                    <i class="bi bi-tags text-xl"></i>
+                    <span class="font-medium text-sm">Categorias</span>
+                </a>
+            @endcan
 
-            @can('create', \App\Models\Category::class)
+            @can('viewAny', \App\Models\User::class)
                 <a href="/users" wire:navigate @class([
                     'item-menu',
                     'item-menu-active' => request()->routeIs('users'),

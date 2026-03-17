@@ -1,14 +1,13 @@
 <?php
 
+use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Computed;
 use Livewire\WithPagination;
 use App\Models\Category;
 use App\Models\Product;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Livewire\Component;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\On;
 

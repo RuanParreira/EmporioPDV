@@ -1,12 +1,9 @@
 <?php
 
 use Livewire\Component;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 
-new class extends Component {
-    public function render()
-    {
-        return $this->view()->layout('layouts.default', [
-            'title' => 'Caixa',
-        ]);
-    }
+new #[Layout('layouts.default')] #[Title('Caixa')] class extends Component {
+    //
 };

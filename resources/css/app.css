@@ -15,8 +15,8 @@
 @theme {
     --font-sans: "Nunito", sans-serif;
 
-    --color-primary: #451a5b;
-    /* --color-primary: #6a487c; */
+    /* --color-primary: #451a5b; */
+    --color-primary: #6a487c;
     --color-background: oklch(96.7% 0.001 286.375);
     --color-description: oklch(55.1% 0.027 264.364);
     --color-border: oklch(87.2% 0.01 258.338);
