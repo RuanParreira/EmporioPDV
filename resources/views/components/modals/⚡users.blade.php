@@ -20,7 +20,7 @@ new class extends Component {
     public string $role = 'caixa';
 
     // Função de validações
-    public function rules()
+    public function rules(): array
     {
         $rules = [
             'name' => 'required|min:3',
@@ -41,16 +41,23 @@ new class extends Component {
     }
 
     // Mensagem de erros
-    public function messages()
+    public function messages(): array
     {
         return [
+            // Mensagens para o Nome
             'name.required' => 'Nome Obrigatório',
             'name.min' => 'O nome deve ter no mínimo 3 caracteres',
+
+            // Mensagens para o email
             'email.required' => 'O email é obrigatório',
             'email.email' => 'Insira um email válido',
             'email.unique' => 'Esse email já está em uso',
+
+            // Mensagens para a senha
             'password.required' => 'A senha é obrigatória',
             'password.min' => 'A senha deve ter no mínimo 8 caracteres',
+
+            // Mensagem para o cargo
             'role.in' => 'Cargo inválido',
         ];
     }
@@ -79,7 +86,7 @@ new class extends Component {
         $this->showModal = true;
     }
 
-    public function save()
+    public function save(): void
     {
         $this->validate();
 
@@ -88,15 +95,16 @@ new class extends Component {
             $user = User::findOrFail($this->userId);
             Gate::authorize('update', $user);
 
-            $user->name = $this->name;
-            $user->email = $this->email;
-            $user->role = $this->role;
-
+            $data = [
+                'name' => $this->name,
+                'email' => $this->email,
+                'role' => $this->role,
+            ];
             if ($this->changePassword && !empty($this->password)) {
-                $user->password = Hash::make($this->password);
+                $data['password'] = Hash::make($this->password);
             }
+            $user->update($data);
 
-            $user->save();
             session()->flash('success', 'Usuário atualizado com sucesso!');
         } else {
             // Fluxo de Criação

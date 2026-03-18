@@ -3,7 +3,8 @@
     <div class="flex flex-col lg:flex-row justify-between">
         <x-titulo titulo="Produtos" descricao="Gerencie os produtos do sistema" />
         @can('create', \App\Models\Product::class)
-            <button wire:click="create" class="bg-primary hover:bg-primary/90 h-10 px-4 rounded-lg cursor-pointer">
+            <button wire:click="$dispatch('open-product-modal')"
+                class="bg-primary hover:bg-primary/90 h-10 px-4 rounded-lg cursor-pointer">
                 <span class="text-white">
                     + Novo Produto
                 </span>
@@ -81,7 +82,7 @@
                         </td>
                         @can('viewAny', $product)
                             <td class="p-4 text-right align-middle">
-                                <button
+                                <button wire:click="$dispatch('open-product-modal', { id: {{ $product->id }} })"
                                     class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/20 hover:text-purple-950 h-10 w-10 rounded-lg hover:cursor-pointer">
                                     <i class="bi bi-pen text-md"></i>
                                 </button>
@@ -120,4 +121,6 @@
     <div class="mt-4">
         {{ $this->products->links() }}
     </div>
+
+    <livewire:modals.products />
 </div>

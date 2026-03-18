@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Computed;
 use Livewire\WithPagination;
+use Livewire\Attributes\On;
 
 new #[Layout('layouts.default')] #[Title('Lista de Produtos')] class extends Component {
     use WithPagination;
@@ -17,6 +18,7 @@ new #[Layout('layouts.default')] #[Title('Lista de Produtos')] class extends Com
         $this->resetPage();
     }
 
+    #[On('product-saved')]
     #[Computed]
     public function products()
     {
