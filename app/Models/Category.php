@@ -9,7 +9,6 @@ class Category extends Model
 {
     use HasFactory;
 
-    const DEFAULT_NAME = 'SemCategoria';
     protected $fillable = [
         'name'
     ];

@@ -21,10 +21,8 @@ class DatabaseSeeder extends Seeder
     {
         User::factory(20)->create();
 
-        // Cria 30 categorias e, PARA CADA categoria criada, cria automaticamente 5 produtos.
-        Category::factory(30)->has(Product::factory()->count(5))->create();
-
-        Category::firstOrCreate(['name' => 'SemCategoria']);
+        // Cria 5 categorias e, PARA CADA categoria criada, cria automaticamente 5 produtos.
+        Category::factory(5)->has(Product::factory()->count(5))->create();
 
         User::factory()->create([
             'name' => 'dev',
@@ -50,11 +48,5 @@ class DatabaseSeeder extends Seeder
             'email' => 'caixa@caixa.com',
             'password' => 'Password@123'
         ]);
-
-        $caixa = User::where('name', 'caixa')->first();
-        Sale::factory(20)
-            ->for($caixa)
-            ->has(SaleItem::factory()->count(rand(1, 4)), 'items')
-            ->create();
     }
 }

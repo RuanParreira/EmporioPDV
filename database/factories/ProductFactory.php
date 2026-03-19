@@ -19,12 +19,12 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            'category_id' => Category::factory(),
+            'category_id' => null,
             'name' => ucfirst($this->faker->words(3, true)),
             'description' => $this->faker->sentence(),
-            'price' => $this->faker->randomFloat(2, 5, 200), // Valor com 2 casas decimais (ex: 15.50)
+            'price' => $this->faker->randomFloat(2, 5, 200),
             'measure_unit' => $this->faker->randomElement(['UN', 'KG']),
-            'active' => $this->faker->boolean(90) // 90% chance de criar ativo
+            'active' => $this->faker->boolean(90)
         ];
     }
 }

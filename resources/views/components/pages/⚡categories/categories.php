@@ -7,7 +7,6 @@ use Livewire\Attributes\Computed;
 use Livewire\WithPagination;
 use App\Models\Category;
 use App\Models\Product;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\On;
 
@@ -17,6 +16,7 @@ new #[Layout('layouts.default')] #[Title('Lista de Categorias')] class extends C
     public int $totalCategories = 0;
     public int $totalProducts = 0;
     public string $topCategory = '-';
+    public int $uncategorizedProducts = 0;
 
     public function mount(): void
     {
@@ -28,7 +28,9 @@ new #[Layout('layouts.default')] #[Title('Lista de Categorias')] class extends C
     public function loadStats(): void
     {
         $this->totalProducts = Product::count();
-        $this->totalCategories = Category::where('name', '!=', Category::DEFAULT_NAME)->count();
+        $this->totalCategories = Category::count();
+
+        $this->uncategorizedProducts = Product::whereNull('category_id')->count();
 
         $top = Category::withCount('products')->orderByDesc('products_count')->first();
         $this->topCategory = ($top && $top->products_count > 0)
@@ -41,8 +43,6 @@ new #[Layout('layouts.default')] #[Title('Lista de Categorias')] class extends C
     {
         return Category::query()
             ->withCount('products')
-            ->where('name', '!=', Category::DEFAULT_NAME)
-            ->orWhere(fn($q) => $q->where('name', Category::DEFAULT_NAME)->has('products'))
             ->orderBy('id')
             ->paginate(18); // <-- Paginação com 18 itens
     }
@@ -52,22 +52,7 @@ new #[Layout('layouts.default')] #[Title('Lista de Categorias')] class extends C
     {
         Gate::authorize('delete', $category);
 
-        $defaultCategory = Category::firstOrCreate([
-            'name' => Category::DEFAULT_NAME,
-        ]);
-
-        if ($category->id === $defaultCategory->id) {
-            $this->addError('delete', 'A categoria padrão não pode ser removida.');
-            return;
-        }
-
-        DB::transaction(function () use ($category, $defaultCategory) {
-            $category->products()->update([
-                'category_id' => $defaultCategory->id,
-            ]);
-
-            $category->delete();
-        });
+        $category->delete();
 
         $this->loadStats();
     }

@@ -11,10 +11,10 @@ new class extends Component {
     public bool $showModal = false;
 
     public ?int $productId = null;
+    public ?int $category_id = null;
 
     public string $name = '';
     public string $price = '';
-    public string $category_id = '';
     public string $measure_unit = 'UN';
 
     public function rules(): array
@@ -22,7 +22,7 @@ new class extends Component {
         return [
             'name' => ['required', 'string', 'max:255', 'min:3', Rule::unique('products', 'name')->ignore($this->productId)],
             'price' => 'required|numeric|min:0',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'nullable|exists:categories,id',
             'measure_unit' => 'required|in:UN,KG',
         ];
     }
@@ -31,7 +31,6 @@ new class extends Component {
     {
         return [
             // Mensagens para o Nome
-            'name.required' => 'O nome do produto é obrigatório.',
             'name.string' => 'O nome deve ser um texto válido.',
             'name.max' => 'O nome não pode ter mais que 255 caracteres.',
             'name.min' => 'O nome deve ter no mínimo 3 caracteres.',
@@ -178,7 +177,10 @@ new class extends Component {
                     open: false,
                     search: '',
                     selectedId: @entangle('category_id'),
-                    categories: {{ Js::from($categories) }},
+                    categories: [
+                        { id: null, name: 'Sem Categoria' },
+                        ...{{ Js::from($categories) }}
+                    ],
                     highlightedIndex: 0,
                 
                     get filteredCategories() {
@@ -187,9 +189,8 @@ new class extends Component {
                     },
                 
                     get selectedName() {
-                        if (!this.selectedId) return 'Selecione uma categoria...';
                         let cat = this.categories.find(c => c.id == this.selectedId);
-                        return cat ? cat.name : 'Selecione uma categoria...';
+                        return cat ? cat.name : 'Sem Categoria';
                     },
                 
                     selectCategory(category) {

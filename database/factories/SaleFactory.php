@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Product;
 use App\Models\Sale;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -18,17 +19,12 @@ class SaleFactory extends Factory
      */
     public function definition(): array
     {
-        $randomDate = $this->faker->dateTimeBetween('-1 week', 'now');
         return [
-            'user_id' => User::factory(),
-            'total_value' => $this->faker->randomFloat(2, 10, 500),
-            'payment_method' => $this->faker->randomElement([
-                'dinheiro',
-                'pix',
-                'cartao',
-
-            ]),
-            'created_at' => $randomDate,
+            'sale_id' => Sale::factory(),
+            'product_id' => Product::factory(),
+            'quantity' => $this->faker->numberBetween(1, 5),
+            'unit_price' => $this->faker->randomFloat(2, 5, 100),
+            'notes' => $this->faker->optional(0.3)->sentence(3),
         ];
     }
 }
