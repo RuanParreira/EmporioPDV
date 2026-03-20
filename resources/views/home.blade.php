@@ -64,7 +64,7 @@
                             <span class="text-red-700">{{ $message }}</span>
                         @enderror
                     </div>
-                    <button
+                    <button type="submit"
                         class="cursor-pointer inline-flex items-center justify-center whitespace-nowrap ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-primary/90 px-4 py-2 w-full h-12 rounded-xl text-base font-bold gap-2 text-white">
                         <i class="bi bi-box-arrow-right text-lg"></i>
                         <span class="text-lg">

@@ -1,9 +1,9 @@
-<div class="space-y-4">
+<div class="space-y-4 p-6">
     {{-- Titulo --}}
     <div class="flex flex-col lg:flex-row justify-between">
         <x-titulo titulo="Produtos" descricao="Gerencie os produtos do sistema" />
         @can('create', \App\Models\Product::class)
-            <button wire:click="$dispatch('open-product-modal')"
+            <button type="button" wire:click="$dispatch('open-product-modal')"
                 class="bg-primary hover:bg-primary/90 h-10 px-4 rounded-lg cursor-pointer">
                 <span class="text-white">
                     + Novo Produto
@@ -82,16 +82,18 @@
                         </td>
                         @can('viewAny', $product)
                             <td class="p-4 text-right align-middle">
-                                <button wire:click="$dispatch('open-product-modal', { id: {{ $product->id }} })"
+                                <button type="button"
+                                    wire:click="$dispatch('open-product-modal', { id: {{ $product->id }} })"
                                     class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/20 hover:text-purple-950 h-10 w-10 rounded-lg hover:cursor-pointer">
                                     <i class="bi bi-pen text-md"></i>
                                 </button>
-                                <button wire:click="delete({{ $product->id }})"
+                                <button type="button" wire:click="delete({{ $product->id }})"
                                     wire:confirm="Você tem certeza que deseja deleter esse produto?"
                                     class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50  hover:bg-primary/20 h-10 w-10 rounded-lg text-red-500 hover:text-red-700 cursor-pointer">
                                     <i class="bi bi-trash3 text-md"></i>
                                 </button>
-                                <button title="{{ $product->active ? 'Desativar Produto' : 'Ativar Produto' }}"
+                                <button type="button"
+                                    title="{{ $product->active ? 'Desativar Produto' : 'Ativar Produto' }}"
                                     wire:click="toggleActive({{ $product->id }})"
                                     class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 w-10 rounded-lg cursor-pointer {{ $product->active ? 'text-blue-500 hover:bg-blue-100 hover:text-blue-700' : 'text-gray-400 hover:bg-blue-100 hover:text-blue-600' }}">
                                     <i class="{{ $product->active ? 'bi bi-toggle-on' : 'bi bi-toggle-off' }} text-xl"></i>
@@ -107,7 +109,7 @@
                                 <p class="text-description font-medium">
                                     Nenhum produto encontrado para "{{ $search }}"
                                 </p>
-                                <button wire:click="$set('search', '')"
+                                <button type="button" wire:click="$set('search', '')"
                                     class="text-primary hover:underline text-sm cursor-pointer">
                                     Limpar busca
                                 </button>

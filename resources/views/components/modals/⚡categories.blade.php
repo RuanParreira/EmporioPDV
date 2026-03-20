@@ -61,52 +61,50 @@ new class extends Component {
 };
 ?>
 
-<div>
-    <div x-data="{ open: @entangle('showModal') }" x-show="open" class="fixed inset-0 z-50 flex items-center justify-center p-4"
-        style="display: none;">
-        {{-- Overlay (Fundo Escuro) --}}
-        <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-50"
-            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @click="open = false"
-            class="absolute inset-0 bg-black/80"></div>
 
-        {{-- Cartão do Modal --}}
-        <div x-show="open" x-transition:enter="transition ease-out duration-100"
-            x-transition:enter-start="opacity-0 scale-95 translate-y-4"
-            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-            x-transition:leave="transition ease-in duration-50"
-            x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-            x-transition:leave-end="opacity-0 scale-95 translate-y-4"
-            class="bg-white rounded-2xl shadow-xl w-full max-w-xl p-6 relative z-10">
+<div x-data="{ open: @entangle('showModal') }" x-show="open" class="fixed inset-0 z-50 flex items-center justify-center p-4"
+    style="display: none;">
+    {{-- Overlay (Fundo Escuro) --}}
+    <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-50"
+        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @click="open = false"
+        class="absolute inset-0 bg-black/80"></div>
 
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold">
-                    <i class="bi bi-bag-plus text-primary"></i> Nova Categoria
-                </h3>
-                <button @click="open = false" class="text-gray-400 hover:text-gray-600 cursor-pointer">
-                    <i class="bi bi-x-lg"></i>
-                </button>
-            </div>
+    {{-- Cartão do Modal --}}
+    <div x-show="open" x-transition:enter="transition ease-out duration-100"
+        x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+        x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-50"
+        x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+        x-transition:leave-end="opacity-0 scale-95 translate-y-4"
+        class="bg-white rounded-2xl shadow-xl w-full max-w-xl p-6 relative z-10">
 
-            <form wire:submit="save" autocomplete="off">
-                <div class="space-y-4">
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nome da
-                            Categoria</label>
-                        <input id="name" type="text" wire:model="name" placeholder="Digite o nome da categoria"
-                            class="flex w-full border border-border bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm rounded-lg h-11">
-                        @error('name')
-                            <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="flex gap-3">
-                        <button type="button" @click="open = false"
-                            class="flex-1 px-4 py-2 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer">Cancelar</button>
-                        <button type="submit"
-                            class="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-transform active:scale-95 cursor-pointer">Salvar</button>
-                    </div>
-                </div>
-            </form>
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-bold">
+                <i class="bi bi-bag-plus text-primary"></i> Nova Categoria
+            </h3>
+            <button type="button" @click="open = false" class="text-gray-400 hover:text-gray-600 cursor-pointer">
+                <i class="bi bi-x-lg"></i>
+            </button>
         </div>
+
+        <form wire:submit="save" autocomplete="off">
+            <div class="space-y-4">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nome da
+                        Categoria</label>
+                    <input id="name" type="text" wire:model="name" placeholder="Digite o nome da categoria"
+                        class="flex w-full border border-border bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm rounded-lg h-11">
+                    @error('name')
+                        <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="flex gap-3">
+                    <button type="button" @click="open = false"
+                        class="flex-1 px-4 py-2 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer">Cancelar</button>
+                    <button type="submit"
+                        class="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-transform active:scale-95 cursor-pointer">Salvar</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>

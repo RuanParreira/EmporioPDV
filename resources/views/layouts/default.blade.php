@@ -18,15 +18,19 @@
 </head>
 
 <body class="bg-background">
-    <main
-        class="mt-18 w-full overflow-y-auto transition-all duration-300 lg:mt-0 lg:ml-64 lg:h-screen lg:w-[calc(100%-16rem)] p-6 space-y-6">
+    <x-toast />
+    <div class="flex min-h-screen w-full">
         <livewire:menu />
-        @isset($slot)
-            {{ $slot }}
-        @else
-            @yield('content')
-        @endisset
-    </main>
+        <main class="flex-1 overflow-auto">
+
+            @isset($slot)
+                {{ $slot }}
+            @else
+                @yield('content')
+            @endisset
+        </main>
+    </div>
+
     @livewireScripts
 </body>
 

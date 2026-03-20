@@ -139,7 +139,8 @@ new class extends Component {
                 <i class="bi {{ $productId ? 'bi-pencil-square' : 'bi bi-basket3' }} text-primary"></i>
                 {{ $productId ? 'Editar Produto' : 'Novo Produto' }}
             </h3>
-            <button @click="open = false" class="text-gray-400 hover:text-gray-700 cursor-pointer transition-colors">
+            <button type="button" @click="open = false"
+                class="text-gray-400 hover:text-gray-700 cursor-pointer transition-colors">
                 <i class="bi bi-x-lg"></i>
             </button>
         </div>

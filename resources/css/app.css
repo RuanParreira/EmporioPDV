@@ -8,9 +8,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* * {
-    outline: 1px solid red;
-} */
+* {
+    /* @apply capitalize; */
+    /* outline: 1px solid red; */
+}
 
 @theme {
     --font-sans: "Nunito", sans-serif;

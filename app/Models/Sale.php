@@ -12,7 +12,8 @@ class Sale extends Model
     protected $fillable = [
         'user_id',
         'total_value',
-        'payment_method'
+        'payment_method',
+        'received_value'
     ];
 
     // Uma venda PERTENCE A um usuário (quem operou o caixa)

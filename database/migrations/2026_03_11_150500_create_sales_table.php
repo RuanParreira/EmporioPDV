@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users'); //ID do vendedor
             $table->decimal('total_value', 10, 2);
             $table->string('payment_method');
+            $table->decimal('received_value', 10, 2)->nullable();
             $table->timestamps();
         });
     }

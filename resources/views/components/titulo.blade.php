@@ -1,6 +1,6 @@
 <div class="flex flex-col">
     <div class="flex items-center">
-        <h2 class="text-3xl font-bold">{{ $titulo }}</h2>
+        <h2 class="text-2xl font-extrabold">{{ $titulo }}</h2>
     </div>
-    <p class="text-gray-400">{{ $descricao }}</p>
+    <p class="text-gray-400 text-sm">{{ $descricao }}</p>
 </div>

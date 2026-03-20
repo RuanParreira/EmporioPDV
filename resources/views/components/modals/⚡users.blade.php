@@ -147,7 +147,8 @@ new class extends Component {
                 <i class="bi {{ $userId ? 'bi-person-gear' : 'bi-person-plus' }} text-primary"></i>
                 {{ $userId ? 'Editar Usuário' : 'Novo Usuário' }}
             </h3>
-            <button @click="open = false" class="text-gray-400 hover:text-gray-700 cursor-pointer transition-colors">
+            <button type="button" @click="open = false"
+                class="text-gray-400 hover:text-gray-700 cursor-pointer transition-colors">
                 <i class="bi bi-x-lg"></i>
             </button>
         </div>
