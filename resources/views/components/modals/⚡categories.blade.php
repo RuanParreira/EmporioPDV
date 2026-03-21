@@ -46,11 +46,13 @@ new class extends Component {
             $category = Category::findOrFail($this->categoryId);
             Gate::authorize('update', $category);
             $category->update(['name' => $this->name]);
-            session()->flash('success', 'Categoria atualizada com sucesso!');
+
+            $this->dispatch('notify', title: 'Sucesso!', message: 'Categoria atualizada com sucesso!', type: 'success');
         } else {
             Gate::authorize('create', Category::class);
             Category::create(['name' => $this->name]);
-            session()->flash('success', 'Categoria criada com sucesso!');
+
+            $this->dispatch('notify', title: 'Sucesso!', message: 'Categoria criada com sucesso!', type: 'success');
         }
 
         $this->showModal = false;

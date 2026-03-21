@@ -192,7 +192,7 @@ new class extends Component {
             $this->reset(['cart', 'paymentMethod', 'receivedValue']);
 
             // 7. Dispara um evento de sucesso para mostrar um alerta na tela
-            $this->dispatch('notify', title: 'Venda Concluída!', message: 'A venda foi salva no sistema e o carrinho limpo.');
+            $this->dispatch('notify', title: 'Venda Concluída!', type: 'success', message: 'A venda foi salva no sistema e o carrinho limpo.');
         } catch (\Exception $e) {
             // Se algo der errado, desfaz tudo e avisa o erro
             DB::rollBack();
@@ -316,21 +316,21 @@ new class extends Component {
             <div class="grid grid-cols-3 gap-2">
                 {{-- Botão Cartão --}}
                 <button type="button" wire:click="$set('paymentMethod', 'cartao')"
-                    class="cursor-pointer flex flex-col items-center py-3 rounded-xl text-xs font-bold transition-all border-2
+                    class="cursor-pointer flex flex-col items-center py-2 rounded-xl text-xs font-bold transition-all border-2
                     {{ $paymentMethod === 'cartao' ? 'bg-primary text-white ' : 'bg-input text-description border-transparent hover:bg-primary/20' }}">
                     <i class="bi bi-credit-card text-lg"></i>
                     Cartão
                 </button>
                 {{-- Botão Pix --}}
                 <button type="button" wire:click="$set('paymentMethod', 'pix')"
-                    class="cursor-pointer flex flex-col items-center py-3 rounded-xl text-xs font-bold transition-all border-2
+                    class="cursor-pointer flex flex-col items-center py-1 rounded-xl text-xs font-bold transition-all border-2
                     {{ $paymentMethod === 'pix' ? 'bg-primary text-white' : 'bg-input text-description border-transparent hover:bg-primary/20' }}">
                     <i class="bi bi-phone text-lg"></i>
                     Pix
                 </button>
                 {{-- Botão Dinheiro --}}
                 <button type="button" wire:click="$set('paymentMethod', 'dinheiro')"
-                    class="cursor-pointer flex flex-col items-center py-3 rounded-xl text-xs font-bold transition-all border-2
+                    class="cursor-pointer flex flex-col items-center py-2 rounded-xl text-xs font-bold transition-all border-2
                     {{ $paymentMethod === 'dinheiro' ? 'bg-primary text-white' : 'bg-input text-description border-transparent hover:bg-primary/20' }}">
                     <i class="bi bi-cash text-lg"></i>
                     Dinheiro
@@ -338,17 +338,15 @@ new class extends Component {
             </div>
             {{-- Calcular troco se for dinheiro --}}
             @if ($paymentMethod === 'dinheiro')
-                <div class="mt-4 bg-gray-50 border border-gray-200 rounded-xl p-3 space-y-2 transition-all">
+                <div class="mt-3 bg-gray-50 border border-gray-200 rounded-xl p-3 space-y-2 transition-all">
                     <label class="text-xs font-bold text-description uppercase tracking-wider">
                         Valor Recebido do Cliente
                     </label>
-                    <div class="flex gap-2 items-center">
-                        <div class="relative w-full">
-                            <span
-                                class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-sm pointer-events-none">R$</span>
-                            <input type="text" wire:model.live.debounce.300ms="receivedValue" placeholder="Ex: 50,00"
-                                class="w-full font-bold top-1/2 text-description border border-border bg-white pl-9 pr-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg h-10">
-                        </div>
+                    <div class="relative w-full">
+                        <span
+                            class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-sm pointer-events-none">R$</span>
+                        <input type="text" wire:model.live.debounce.300ms="receivedValue" placeholder="Ex: 50,00"
+                            class="w-full font-bold text-description border border-border bg-white pl-9 pr-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg">
                     </div>
 
                     @error('receivedValue')
@@ -360,7 +358,7 @@ new class extends Component {
                         <div class="flex justify-between items-center text-sm pt-2 border-t border-gray-200 mt-2">
                             <span class="font-bold text-gray-500">Troco a devolver:</span>
                             <span
-                                class="font-extrabold {{ $this->change > 0 ? 'text-green-600' : 'text-gray-400' }} text-lg">
+                                class="font-extrabold {{ $this->change > 0 ? 'text-green-600' : 'text-gray-400' }} text-md">
                                 R$ {{ number_format($this->change, 2, ',', '.') }}
                             </span>
                         </div>

@@ -96,7 +96,7 @@ new class extends Component {
                 'measure_unit' => $this->measure_unit,
             ]);
 
-            session()->flash('product', 'Produto atualizado com sucesso!');
+            $this->dispatch('notify', title: 'Sucesso!', message: 'Produto atualizado com sucesso!', type: 'success');
         } else {
             Gate::authorize('create', Product::class);
 
@@ -108,7 +108,7 @@ new class extends Component {
                 'active' => true,
             ]);
 
-            session()->flash('product', 'Produto criado com sucesso!');
+            $this->dispatch('notify', title: 'Sucesso!', message: 'Produto criado com sucesso!', type: 'success');
         }
 
         $this->showModal = false;

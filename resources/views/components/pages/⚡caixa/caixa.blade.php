@@ -1,17 +1,21 @@
 <div class="flex h-screen overflow-hidden">
-    <div class="flex-1 flex flex-col p-4 overflow-hidden">
+    <div class="flex-1 flex flex-col p-4 overflow-hidden" x-on:keydown.window.f1.prevent="$refs.idInput.focus()">
         {{-- Titulo --}}
         <h1 class="text-xl font-extrabold  mb-3">
             Nova Venda
         </h1>
         <div class="flex gap-3 mb-4 items-center flex-wrap">
+            <div class="w-15">
+                <input type="text" x-ref="idInput" wire:model="searchId" wire:keydown.enter="addSearchedProduct"
+                    class="flex text-center w-full border border-border bg-input px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm rounded-xl h-11"
+                    placeholder="#ID">
+            </div>
             <div class="relative w-64">
                 <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-description text-md"></i>
                 <input type="text" type="text" wire:model.live.debounce.200ms="search"
                     class="flex w-full border border-border bg-input px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10 rounded-xl h-11"
                     placeholder="Buscar produto...">
             </div>
-
             @if ($this->categories->isNotEmpty())
                 <button type="button" wire:click="$set('filter', null)"
                     class="cursor-pointer px-4 py-2 rounded-xl text-sm font-bold transition-all shadow-sm border-2

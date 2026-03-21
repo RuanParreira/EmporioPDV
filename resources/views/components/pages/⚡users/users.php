@@ -27,7 +27,7 @@ new #[Layout('layouts.default')] #[Title('Lista de Usuários')] class extends Co
         Gate::authorize('delete', $user);
 
         if (Auth::id() === $user->id) {
-            $this->addError('delete', 'Você não pode deletar seu próprio usuário.');
+            $this->dispatch('notify', title: 'Erro!', message: 'Você não pode deletar seu próprio usuário.', type: 'error');
             return;
         }
 

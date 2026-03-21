@@ -105,7 +105,7 @@ new class extends Component {
             }
             $user->update($data);
 
-            session()->flash('success', 'Usuário atualizado com sucesso!');
+            $this->dispatch('notify', title: 'Sucesso!', message: 'Usuario atualizado com sucesso!', type: 'success');
         } else {
             // Fluxo de Criação
             Gate::authorize('create', User::class);
@@ -116,7 +116,7 @@ new class extends Component {
                 'password' => Hash::make($this->password),
                 'role' => $this->role,
             ]);
-            session()->flash('success', 'Usuário criado com sucesso!');
+            $this->dispatch('notify', title: 'Sucesso!', message: 'Usuario criado com sucesso!', type: 'success');
         }
 
         $this->showModal = false;
