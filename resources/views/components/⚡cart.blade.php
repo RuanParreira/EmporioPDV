@@ -19,6 +19,40 @@ new class extends Component {
 
     public string $receivedValue = '';
 
+    public function rules()
+    {
+        return [
+            'receivedValue' => [
+                'required_if:paymentMethod,dinheiro',
+                'regex:/^[0-9]+(,[0-9]{1,2})?$/',
+                function ($attribute, $value, $fail) {
+                    if ($this->paymentMethod === 'dinheiro') {
+                        $floatValue = (float) str_replace(',', '.', $value);
+                        if ($floatValue < $this->cartTotal()) {
+                            $fail('O valor recebido é menor que o total da venda.');
+                        }
+                    }
+                },
+            ],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'receivedValue.required_if' => 'Informe o valor recebido pelo cliente.',
+            'receivedValue.regex' => 'O valor informado tem um formato inválido.',
+        ];
+    }
+
+    public function updatedPaymentMethod($value)
+    {
+        if ($value !== 'dinheiro') {
+            $this->resetValidation('receivedValue');
+            $this->receivedValue = '';
+        }
+    }
+
     // Carrinho
     #[On('add-to-cart-weight')]
     public function addWeightToCart(int $productId, float $weight): void
@@ -115,23 +149,16 @@ new class extends Component {
     // Inserir no banco
     public function checkout()
     {
+        $this->validate();
+
         if (empty($this->cart)) {
             $this->addError('cart', 'O carrinho está vazio.');
-            return;
-        }
-
-        if (empty($this->paymentMethod)) {
-            $this->addError('payment', 'Selecione uma forma de pagemento.');
             return;
         }
 
         $receivedFloat = null;
         if ($this->paymentMethod === 'dinheiro') {
             $receivedFloat = (float) str_replace(',', '.', $this->receivedValue);
-            if ($receivedFloat < $this->cartTotal()) {
-                $this->addError('receivedValue', 'O valor recebido é menor que o total da venda.');
-                return;
-            }
         }
 
         // 2. Inicia a Transação no Banco de Dados
@@ -140,7 +167,7 @@ new class extends Component {
 
             // 3. Cria o registro mestre da Venda (Tabela 'sales')
             $sale = Sale::create([
-                'user_id' => auth()->id(), // Pega o ID do funcionário logado
+                'user_id' => auth()->id(),
                 'total_value' => $this->cartTotal(),
                 'payment_method' => $this->paymentMethod,
                 'received_value' => $receivedFloat,
@@ -151,10 +178,8 @@ new class extends Component {
                 SaleItem::create([
                     'sale_id' => $sale->id,
                     'product_id' => $item['id'],
-
                     'product_name' => $item['name'],
                     'unit_price' => $item['price'],
-
                     'quantity' => $item['quantity'],
                     'notes' => $item['observation'] ?? null,
                 ]);
@@ -317,13 +342,12 @@ new class extends Component {
                     <label class="text-xs font-bold text-description uppercase tracking-wider">
                         Valor Recebido do Cliente
                     </label>
-                    <div class="flex gap-2">
+                    <div class="flex gap-2 items-center">
                         <div class="relative w-full">
                             <span
-                                class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-sm">R$</span>
-                            {{-- wire:model.live atualiza o troco enquanto o usuário digita --}}
+                                class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-sm pointer-events-none">R$</span>
                             <input type="text" wire:model.live.debounce.300ms="receivedValue" placeholder="Ex: 50,00"
-                                class="flex w-full border border-border bg-white pl-9 pr-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg h-10">
+                                class="w-full font-bold top-1/2 text-description border border-border bg-white pl-9 pr-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg h-10">
                         </div>
                     </div>
 
