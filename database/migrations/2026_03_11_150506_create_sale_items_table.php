@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('sale_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('sale_id')->constrained('sales')->onDelete('cascade');
-            $table->foreignId('product_id')->constrained('products');
+            $table->foreignId('product_id')->nullable()
+                ->constrained('products')
+                ->nullOnDelete();
             $table->decimal('quantity', 8, 3); // 3 casas decimais para aceitar 0.450 kg de sorvete!
             $table->text('product_name');
             $table->decimal('unit_price', 10, 2);

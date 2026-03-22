@@ -90,8 +90,8 @@
             {{ $this->products->links() }}
         </div>
     </div>
-
     {{-- Carrinho --}}
     <livewire:cart wire:key="pos-cart-sidebar" />
     <livewire:modals.cart />
+
 </div>

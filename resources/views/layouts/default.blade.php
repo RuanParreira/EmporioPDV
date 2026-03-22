@@ -32,6 +32,21 @@
     </div>
 
     @livewireScripts
+
+    <script>
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('ask-to-print', (data) => {
+                const eventData = Array.isArray(data) ? data[0] : data;
+                const saleId = eventData.saleId;
+
+                if (saleId) {
+                    const printUrl = `${"{{ url('/imprimir-recibo') }}"}/${saleId}`;
+
+                    window.open(printUrl, '_blank', 'width=450,height=700');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

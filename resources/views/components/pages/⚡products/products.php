@@ -37,7 +37,7 @@ new #[Layout('layouts.default')] #[Title('Lista de Produtos')] class extends Com
     {
         Gate::authorize('delete', $product);
 
-        $product->delete();
+        $product->forceDelete();
     }
 
     public function toggleActive(Product $product): void

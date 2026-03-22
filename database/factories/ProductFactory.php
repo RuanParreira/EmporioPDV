@@ -20,7 +20,7 @@ class ProductFactory extends Factory
     {
         return [
             'category_id' => null,
-            'name' => ucfirst($this->faker->words(3, true)),
+            'name' => ucfirst($this->faker->unique()->word()),
             'description' => $this->faker->sentence(),
             'price' => $this->faker->randomFloat(2, 5, 200),
             'measure_unit' => $this->faker->randomElement(['UN', 'KG']),

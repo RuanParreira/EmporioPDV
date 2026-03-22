@@ -161,47 +161,48 @@ new class extends Component {
             $receivedFloat = (float) str_replace(',', '.', $this->receivedValue);
         }
 
-        // 2. Inicia a Transação no Banco de Dados
         try {
-            DB::beginTransaction();
-
-            // 3. Cria o registro mestre da Venda (Tabela 'sales')
-            $sale = Sale::create([
-                'user_id' => auth()->id(),
-                'total_value' => $this->cartTotal(),
-                'payment_method' => $this->paymentMethod,
-                'received_value' => $receivedFloat,
-            ]);
-
-            // 4. Salva os Itens da Venda (Tabela 'sale_items')
-            foreach ($this->cart as $item) {
-                SaleItem::create([
-                    'sale_id' => $sale->id,
-                    'product_id' => $item['id'],
-                    'product_name' => $item['name'],
-                    'unit_price' => $item['price'],
-                    'quantity' => $item['quantity'],
-                    'notes' => $item['observation'] ?? null,
+            $saleId = DB::transaction(function () use ($receivedFloat) {
+                $sale = Sale::create([
+                    'user_id' => auth()->id(),
+                    'total_value' => $this->cartTotal(),
+                    'payment_method' => $this->paymentMethod,
+                    'received_value' => $receivedFloat,
                 ]);
-            }
 
-            // 5. Confirma a transação (Salva tudo definitivamente)
-            DB::commit();
+                $itemsData = collect($this->cart)
+                    ->map(function ($item) use ($sale) {
+                        return [
+                            'sale_id' => $sale->id,
+                            'product_id' => $item['id'],
+                            'product_name' => $item['name'],
+                            'unit_price' => $item['price'],
+                            'quantity' => $item['quantity'],
+                            'notes' => $item['observation'] ?? null,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ];
+                    })
+                    ->toArray();
 
-            // 6. Limpa o carrinho e reseta o pagamento
+                // 2. Insere todos os itens de uma vez só em uma única query!
+                SaleItem::insert($itemsData);
+
+                return $sale->id;
+            });
+
             $this->reset(['cart', 'paymentMethod', 'receivedValue']);
-
-            // 7. Dispara um evento de sucesso para mostrar um alerta na tela
             $this->dispatch('notify', title: 'Venda Concluída!', type: 'success', message: 'A venda foi salva no sistema e o carrinho limpo.');
+            $this->dispatch('ask-to-print', saleId: $saleId);
         } catch (\Exception $e) {
-            // Se algo der errado, desfaz tudo e avisa o erro
-            DB::rollBack();
             Log::error('Erro ao finalizar venda: ' . $e->getMessage());
-            $this->addError('checkout', 'Ocorreu um erro ao finalizar a venda. Tente novamente.');
+            $this->addError('checkout', 'Erro ao processar venda.');
         }
     }
 };
 ?>
+
+
 
 <div class="w-96 bg-white border-l border-slate-100 flex flex-col shadow-sm">
     <div class="p-4 border-b border-slate-200 flex items-center gap-2">

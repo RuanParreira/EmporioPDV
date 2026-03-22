@@ -35,6 +35,7 @@ class DashboardController extends Controller
         // Produto Mais Vendido
         $maisVendido = SaleItem::query()
             ->select('products.name', DB::raw('SUM(sale_items.quantity) as total_qtd'))
+            ->whereNotNull('sale_items.product_id')
             ->join('products', 'products.id', '=', 'sale_items.product_id')
             ->groupBy('products.id', 'products.name')
             ->orderByDesc('total_qtd')

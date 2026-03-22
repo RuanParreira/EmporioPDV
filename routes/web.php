@@ -1,17 +1,14 @@
 <?php
 
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Models\Category;
+use App\Models\Sale;
 use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 
 // Rota de Login
-Route::controller(LoginController::class)->group(function () {
-    Route::get('/', 'index')->name('login');
-    Route::get('/login', 'index');
-    Route::post('/login', 'login')->name('auth.login');
-});
+Route::livewire('/', 'auth.login')->name('login');
 
 //Rotas Protegidas
 Route::middleware('auth')->group(function () {
@@ -22,4 +19,9 @@ Route::middleware('auth')->group(function () {
     Route::livewire('/users', 'pages.users')->middleware('can:viewAny,' . User::class)->name('users');
     Route::livewire('/sales', 'pages.sales')->name('sales');
     Route::livewire('/config', 'pages.config')->name('config');
+    Route::get('/imprimir-recibo/{sale}', function (Sale $sale) {
+        Gate::authorize('view', $sale);
+        $sale->load('items');
+        return view('print.receipt', compact('sale'));
+    })->name('print.receipt');
 });
