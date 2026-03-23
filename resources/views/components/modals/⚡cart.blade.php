@@ -32,6 +32,7 @@ new class extends Component {
             ],
             [
                 'weight.required' => 'Informe o peso.',
+                'weight.max' => 'Informe um peso abaixo de 100kg',
             ],
         );
 
@@ -40,6 +41,11 @@ new class extends Component {
 
         if ($weightFloat <= 0) {
             $this->addError('weight', 'Peso deve ser maior que zero.');
+            return;
+        }
+
+        if ($weightFloat > 50) {
+            $this->addError('weight', 'Informe um peso de no máximo 50kg.');
             return;
         }
 
