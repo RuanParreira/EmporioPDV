@@ -140,15 +140,15 @@ new class extends Component {
         x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-50"
         x-transition:leave-start="opacity-100 scale-100 translate-y-0"
         x-transition:leave-end="opacity-0 scale-95 translate-y-4"
-        class="bg-white rounded-2xl shadow-xl w-full max-w-xl p-6 relative z-10">
+        class="relative z-10 w-full max-w-xl rounded-2xl bg-white p-6 shadow-xl">
 
-        <div class="flex justify-between items-center mb-6">
+        <div class="mb-6 flex items-center justify-between">
             <h3 class="text-xl font-bold text-gray-900">
                 <i class="bi {{ $userId ? 'bi-person-gear' : 'bi-person-plus' }} text-primary"></i>
                 {{ $userId ? 'Editar Usuário' : 'Novo Usuário' }}
             </h3>
             <button type="button" @click="open = false"
-                class="text-gray-400 hover:text-gray-700 cursor-pointer transition-colors">
+                class="cursor-pointer text-gray-400 transition-colors hover:text-gray-700">
                 <i class="bi bi-x-lg"></i>
             </button>
         </div>
@@ -158,24 +158,24 @@ new class extends Component {
 
                 {{-- Campo Nome --}}
                 <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nome</label>
+                    <label for="name" class="mb-1 block text-sm font-medium text-gray-700">Nome</label>
                     {{-- Borda com a cor primary no focus simulando a seleção da imagem --}}
                     <input id="name" type="text" wire:model.blur="name"
-                        class="flex w-full border bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm rounded-lg h-11 border-border"
+                        class="bg-background ring-offset-background focus-visible:ring-primary border-border flex h-11 w-full rounded-lg border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                         placeholder="Digite o nome">
                     @error('name')
-                        <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                        <span class="mt-1 text-xs text-red-500">{{ $message }}</span>
                     @enderror
                 </div>
                 {{-- Campo Email --}}
                 <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <label for="email" class="mb-1 block text-sm font-medium text-gray-700">Email</label>
                     {{-- Borda com a cor primary no focus simulando a seleção da imagem --}}
                     <input id="email" type="email" wire:model="email"
-                        class="flex w-full border bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm rounded-lg h-11 border-border"
+                        class="bg-background ring-offset-background focus-visible:ring-primary border-border flex h-11 w-full rounded-lg border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                         placeholder="Digite o email">
                     @error('email')
-                        <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                        <span class="mt-1 text-xs text-red-500">{{ $message }}</span>
                     @enderror
                 </div>
 
@@ -183,27 +183,27 @@ new class extends Component {
                 <div>
                     @if ($userId)
                         {{-- Exibe o botão de Alterar a Senha se estiver editando --}}
-                        <div class="flex items-center justify-between mb-2">
+                        <div class="mb-2 flex items-center justify-between">
                             <label class="block text-sm font-medium text-gray-700">Senha do usuário</label>
-                            <label class="inline-flex items-center cursor-pointer">
-                                <input type="checkbox" wire:model.live="changePassword" class="sr-only peer">
+                            <label class="inline-flex cursor-pointer items-center">
+                                <input type="checkbox" wire:model.live="changePassword" class="peer sr-only">
                                 <div
-                                    class="relative w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:inset-s-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary">
+                                    class="after:inset-s-0.5 peer-checked:bg-primary peer relative h-5 w-9 rounded-full bg-gray-200 after:absolute after:top-0.5 after:h-4 after:w-4 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none rtl:peer-checked:after:-translate-x-full">
                                 </div>
                                 <span class="ms-2 text-xs font-medium text-gray-600">Alterar senha</span>
                             </label>
                         </div>
                     @else
-                        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
+                        <label for="password" class="mb-1 block text-sm font-medium text-gray-700">Senha</label>
                     @endif
 
                     {{-- Exibe o input sempre se for criação, ou apenas se o toggle estiver ligado na edição --}}
                     @if (!$userId || $changePassword)
                         <input id="password" type="password" wire:model="password"
-                            class="flex w-full border border-border bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm rounded-lg h-11"
+                            class="border-border bg-background ring-offset-background focus-visible:ring-primary flex h-11 w-full rounded-lg border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                             placeholder="Digite a {{ $userId ? 'nova ' : '' }}senha">
                         @error('password')
-                            <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                            <span class="mt-1 text-xs text-red-500">{{ $message }}</span>
                         @enderror
                     @endif
                 </div>
@@ -211,13 +211,13 @@ new class extends Component {
                 {{-- Campo Cargo (Radio Buttons Customizados) --}}
                 @if ($role !== 'owner')
                     <div>
-                        <label class="block text-sm font-medium text-description mb-2">Cargo</label>
+                        <label class="text-description mb-2 block text-sm font-medium">Cargo</label>
                         <div class="flex gap-3">
                             {{-- Opção Caixa --}}
                             <label class="flex-1 cursor-pointer">
                                 <input type="radio" wire:model="role" value="caixa" class="peer sr-only">
                                 <div
-                                    class="flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all bg-gray-100 text-gray-500 hover:bg-primary/20 peer-checked:bg-primary peer-checked:text-white hover:peer-checked:bg-primary/90 border border-transparent peer-checked:border-primary">
+                                    class="hover:bg-primary/20 peer-checked:bg-primary hover:peer-checked:bg-primary/90 peer-checked:border-primary flex items-center justify-center gap-2 rounded-xl border border-transparent bg-gray-100 py-3 text-sm font-semibold text-gray-500 transition-all peer-checked:text-white">
                                     <i class="bi bi-shop-window"></i>
                                     Caixa
                                 </div>
@@ -227,14 +227,14 @@ new class extends Component {
                             <label class="flex-1 cursor-pointer">
                                 <input type="radio" wire:model="role" value="admin" class="peer sr-only">
                                 <div
-                                    class="flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all bg-gray-100 text-gray-500 hover:bg-primary/20 peer-checked:bg-primary peer-checked:text-white hover:peer-checked:bg-primary/90 border border-transparent peer-checked:border-primary">
+                                    class="hover:bg-primary/20 peer-checked:bg-primary hover:peer-checked:bg-primary/90 peer-checked:border-primary flex items-center justify-center gap-2 rounded-xl border border-transparent bg-gray-100 py-3 text-sm font-semibold text-gray-500 transition-all peer-checked:text-white">
                                     <i class="bi bi-shield-check"></i>
                                     Administrador
                                 </div>
                             </label>
                         </div>
                         @error('role')
-                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            <span class="mt-1 block text-xs text-red-500">{{ $message }}</span>
                         @enderror
                     </div>
                 @endif
@@ -242,7 +242,7 @@ new class extends Component {
             {{-- Botão de Submeter Único e Largo --}}
             <div class="mt-8">
                 <button type="submit" wire:loading.attr="disabled" wire:target="save"
-                    class="w-full px-4 py-3.5 bg-primary text-white text-sm font-bold rounded-xl hover:bg-primary/90 transition-transform active:scale-[0.98] cursor-pointer flex justify-center items-center">
+                    class="bg-primary hover:bg-primary/90 flex w-full cursor-pointer items-center justify-center rounded-xl px-4 py-3.5 text-sm font-bold text-white transition-transform active:scale-[0.98]">
                     <span wire:loading.remove
                         wire:target="save">{{ $userId ? 'Salvar Alterações' : 'Criar Usuário' }}</span>
                     <span wire:loading wire:target="save">Salvando...</span>

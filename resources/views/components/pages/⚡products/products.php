@@ -23,21 +23,22 @@ new #[Layout('layouts.default')] #[Title('Lista de Produtos')] class extends Com
     public function products()
     {
         return Product::query()
+            ->with('category')
             ->when($this->search, function ($q) {
                 $q->where(function ($query) {
                     $query->where('name', 'like', '%' . $this->search . '%')
-                        ->orWhere('id', 'like', '%' . $this->search . '%');
+                        ->orWhere('code', 'like', '%' . $this->search . '%');
                 });
             })
             ->orderByDesc('id')
-            ->paginate(8);
+            ->paginate(9);
     }
 
     public function delete(Product $product): void
     {
         Gate::authorize('delete', $product);
 
-        $product->forceDelete();
+        $product->delete();
     }
 
     public function toggleActive(Product $product): void

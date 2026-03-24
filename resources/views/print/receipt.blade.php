@@ -35,6 +35,10 @@
             text-align: center;
         }
 
+        .text-justify {
+            text-align: justify;
+        }
+
         .text-right {
             text-align: right;
         }
@@ -89,19 +93,21 @@
 <body>
 
     <div class="ticket">
-        <div class="text-center mb-2">
-            <h2 class="bold" style="margin: 0; font-size: 16px;">Empório Do Açaí</h2>
-            <p style="margin: 2px 0;">CNPJ: 00.000.000/0001-00</p>
-            <p style="margin: 2px 0;">Rua Exemplo, 123 - Centro</p>
-            <p style="margin: 2px 0;">Tel: (00) 0000-0000</p>
+        <div class="mb-2 text-left">
+            <h2 class="bold text-center" style="margin: 0; font-size: 16px;">Emporio Do Açaí</h2>
+            <p style="margin: 2px 0;">Avenida Claudino Barretos Rios, N° 7 - Centro</p>
+            <p style="margin: 2px 0;">CNPJ: 65.468.243/0001-02</p>
+            <p style="margin: 2px 0;">Tel: (77) 8166-2230</p>
         </div>
+
 
         <div class="divider"></div>
 
         <div class="mb-2">
             <p style="margin: 2px 0;"><strong>Cupom Não Fiscal</strong></p>
             <p style="margin: 2px 0;">Data: {{ $sale->created_at->format('d/m/Y H:i:s') }}</p>
-            <p style="margin: 2px 0;">Pedido Nº: {{ str_pad($sale->id, 6, '0', STR_PAD_LEFT) }}</p>
+            <p style="margin: 2px 0;">Venda Nº: #{{ str_pad($sale->id, 6, '0', STR_PAD_LEFT) }}</p>
+            <p style="margin: 2px 0;">Vendedor: {{ $sale->user->name }}</p>
         </div>
 
         <div class="divider"></div>
@@ -111,7 +117,7 @@
                 <tr>
                     <th style="width: 15%;">Qtd</th>
                     <th style="width: 55%;">Descrição</th>
-                    <th class="text-right" style="width: 30%;">Total</th>
+                    <th class="text-right" style="width: 30%;">Valor</th>
                 </tr>
             </thead>
             <tbody>
@@ -136,7 +142,7 @@
         <table style="font-size: 12px;">
             <tr>
                 <td class="bold">TOTAL:</td>
-                <td class="text-right bold">R$ {{ number_format($sale->total_value, 2, ',', '.') }}</td>
+                <td class="bold text-right">R$ {{ number_format($sale->total_value, 2, ',', '.') }}</td>
             </tr>
             <tr>
                 <td>Forma de Pagamento:</td>
@@ -155,12 +161,12 @@
             @endif
         </table>
 
-        <div class="divider"></div>
+        {{-- <div class="divider"></div> --}}
 
-        <div class="text-center mt-2">
+        {{-- <div class="mt-2 text-center">
             <p style="margin: 2px 0;">Obrigado pela preferência!</p>
             <p style="margin: 2px 0;">Volte sempre.</p>
-        </div>
+        </div> --}}
     </div>
 
     <script>

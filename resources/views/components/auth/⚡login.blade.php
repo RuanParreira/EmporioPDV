@@ -10,6 +10,7 @@ use Illuminate\Validation\ValidationException;
 new #[Title('EmporioCaixa')] class extends Component {
     public string $email = '';
     public string $password = '';
+    public bool $showPassword = false;
 
     protected function rules(): array
     {
@@ -70,54 +71,61 @@ new #[Title('EmporioCaixa')] class extends Component {
 };
 ?>
 
-<div class="min-h-screen flex items-center justify-center bg-background p-4">
+<div class="bg-background flex min-h-screen items-center justify-center p-4">
     <div class="w-full max-w-lg">
-        <div class="bg-white rounded-2xl shadow-lg p-8 space-y-6">
+        <div class="space-y-6 rounded-2xl bg-white p-8 shadow-lg">
             <div class="flex flex-col items-center gap-3">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo da Empresa" class="w-20 h-20">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo da Empresa" class="h-20 w-20">
                 <div class="text-center">
-                    <h1 class="text-2xl font-extrabold text-primary">
+                    <h1 class="text-primary text-2xl font-extrabold">
                         Empório do Açaí
-                        <p class="text-sm text-description font-normal">
+                        <p class="text-description text-sm font-normal">
                             Sistema de Ponto de Vendas
                         </p>
                     </h1>
                 </div>
             </div>
             @error('credentials')
-                <span class="flex items-center justify-center text-red-700 text-center">{{ $message }}</span>
+                <span class="flex items-center justify-center text-center text-red-700">{{ $message }}</span>
             @enderror
             <form wire:submit="login" class="space-y-4">
                 <div class="space-y-2">
-                    <label for="email" class="text-sm font-semibold text-primary">
+                    <label for="email" class="text-primary text-sm font-semibold">
                         Email
                     </label>
                     <div class="relative mt-1">
-                        <i class="bi bi-envelope absolute left-3 top-1/2 -translate-y-1/2 text-primary"></i>
+                        <i class="bi bi-envelope text-primary absolute left-3 top-1/2 -translate-y-1/2"></i>
                         <input type="email" id="email" name="email" wire:model="email"
-                            class="w-full px-4 py-3 pl-10 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#4A195C] focus:border-transparent outline-none transition"
+                            class="w-full rounded-md border border-gray-300 px-4 py-3 pl-10 outline-none transition focus:border-transparent focus:ring-2 focus:ring-[#4A195C]"
                             placeholder="Digite seu email">
                     </div>
                     @error('email')
-                        <span class="text-red-700 text-sm">{{ $message }}</span>
+                        <span class="text-sm text-red-700">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="space-y-2">
-                    <label for="password" class="text-sm font-semibold text-primary">
+                    <label for="password" class="text-primary text-sm font-semibold">
                         Senha
                     </label>
                     <div class="relative mt-1">
-                        <i class="bi bi-lock absolute left-3 top-1/2 -translate-y-1/2 text-primary"></i>
-                        <input type="password" id="password" name="password" wire:model="password"
-                            class="w-full px-4 py-3 pl-10  border border-gray-300 rounded-md focus:ring-2 focus:ring-[#4A195C] focus:border-transparent outline-none transition"
+                        <i class="bi bi-lock text-primary absolute left-3 top-1/2 -translate-y-1/2"></i>
+                        <input type="{{ $showPassword ? 'text' : 'password' }}" id="password" name="password"
+                            wire:model="password"
+                            class="w-full rounded-md border border-gray-300 px-4 py-3 pl-10 pr-10 outline-none transition focus:border-transparent focus:ring-2 focus:ring-[#4A195C]"
                             placeholder="Digite sua senha">
+
+                        {{-- Botão com wire:click para alternar --}}
+                        <button type="button" wire:click="$toggle('showPassword')"
+                            class="hover:text-primary/60 text-primary absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer items-center justify-center">
+                            <i class="bi {{ $showPassword ? 'bi-eye-slash' : 'bi-eye' }} text-lg"></i>
+                        </button>
                     </div>
                     @error('password')
-                        <span class="text-red-700 text-sm">{{ $message }}</span>
+                        <span class="text-sm text-red-700">{{ $message }}</span>
                     @enderror
                 </div>
                 <button type="submit"
-                    class="cursor-pointer inline-flex items-center justify-center whitespace-nowrap ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-primary/90 px-4 py-2 w-full h-12 rounded-xl text-base font-bold gap-2 text-white">
+                    class="ring-offset-background focus-visible:ring-ring bg-primary hover:bg-primary/90 inline-flex h-12 w-full cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-xl px-4 py-2 text-base font-bold text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
                     <i class="bi bi-box-arrow-right text-lg" wire:loading.remove wire:target="login"></i>
                     <span class="text-lg" wire:loading.remove wire:target="login">
                         Entrar

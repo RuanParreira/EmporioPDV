@@ -204,24 +204,24 @@ new class extends Component {
 
 
 
-<div class="w-96 bg-white border-l border-slate-100 flex flex-col shadow-sm">
-    <div class="p-4 border-b border-slate-200 flex items-center gap-2">
+<div class="flex w-96 flex-col border-l border-slate-100 bg-white shadow-sm">
+    <div class="flex items-center gap-2 border-b border-slate-200 p-4">
         <i class="bi bi-cart text-primary text-lg"></i>
         <h2 class="text-lg font-bold">
             Carrinho
         </h2>
-        <span class="ml-auto bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">
+        <span class="bg-primary ml-auto rounded-full px-2 py-1 text-xs font-bold text-white">
             {{ count($cart) }}
         </span>
     </div>
-    <div class="flex-1 overflow-y-auto p-4 space-y-3">
+    <div class="flex-1 space-y-3 overflow-y-auto p-4">
         {{-- Item do Carrinho --}}
         @forelse ($cart as $id => $item)
-            <div wire:key="cart-item-{{ $id }}" class="bg-input rounded-xl p-3 space-y-2">
+            <div wire:key="cart-item-{{ $id }}" class="bg-input space-y-2 rounded-xl p-3">
                 <div class="flex items-start justify-between">
                     <div>
                         <h4 class="text-sm font-bold">{{ $item['name'] }}</h4>
-                        <p class="text-xs text-description">
+                        <p class="text-description text-xs">
                             @if ($item['is_weight'] ?? false)
                                 R$ {{ number_format($item['price'], 2, ',', '.') }}/kg
                                 <span class="text-purple-900">
@@ -235,7 +235,7 @@ new class extends Component {
                     </div>
                     {{-- Botão de Remover --}}
                     <button type="button" wire:click="removeFromCart({{ $id }})"
-                        class="cursor-pointer text-red-600 hover:bg-red-600/10 rounded-full w-6 h-6 transition-colors items-center justify-center inline-flex">
+                        class="inline-flex h-6 w-6 cursor-pointer items-center justify-center rounded-full text-red-600 transition-colors hover:bg-red-600/10">
                         <i class="bi bi-trash3 text-sm"></i>
                     </button>
                 </div>
@@ -246,11 +246,11 @@ new class extends Component {
                     @if ($item['is_weight'] ?? false)
                         {{-- Visual para Produtos Pesados (Apenas exibe o peso em Kg) --}}
                         <div class="flex items-center justify-between">
-                            <span class="text-xs font-semibold text-description flex items-center gap-1">
+                            <span class="text-description flex items-center gap-1 text-xs font-semibold">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round"
-                                    class="lucide lucide-weight-icon lucide-weight w-3 h-3 text-description">
+                                    class="lucide lucide-weight-icon lucide-weight text-description h-3 w-3">
                                     <circle cx="12" cy="5" r="3" />
                                     <path
                                         d="M6.5 8a2 2 0 0 0-1.905 1.46L2.1 18.5A2 2 0 0 0 4 21h16a2 2 0 0 0 1.925-2.54L19.4 9.5A2 2 0 0 0 17.48 8Z" />
@@ -261,22 +261,22 @@ new class extends Component {
                     @else
                         {{-- Visual para Produtos por Unidade (Botões Normais) --}}
                         <button type="button" wire:click="decrementQuantity({{ $id }})"
-                            class="cursor-pointer text-description w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center hover:bg-primary/20 transition-colors">
+                            class="text-description hover:bg-primary/20 flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg bg-white shadow-sm transition-colors">
                             -
                         </button>
 
-                        <span class="text-sm font-bold w-8 text-center">
+                        <span class="w-8 text-center text-sm font-bold">
                             {{ $item['quantity'] }}
                         </span>
 
                         <button type="button" wire:click="incrementQuantity({{ $id }})"
-                            class="cursor-pointer text-description w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center hover:bg-primary/20 transition-colors">
+                            class="text-description hover:bg-primary/20 flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg bg-white shadow-sm transition-colors">
                             +
                         </button>
                     @endif
 
                     {{-- O Valor Total do Item continua no canto direito --}}
-                    <span class="ml-auto text-sm font-extrabold text-foreground">
+                    <span class="text-foreground ml-auto text-sm font-extrabold">
                         R$ {{ number_format($item['price'] * $item['quantity'], 2, ',', '.') }}
                     </span>
                 </div>
@@ -286,11 +286,11 @@ new class extends Component {
                     <i class="bi bi-chat text-description text-xs"></i>
                     <input type="text" wire:model.blur="cart.{{ $id }}.observation"
                         placeholder="Observação (ex: sem cebola)..."
-                        class="w-full text-xs bg-transparent border-b border-border/50 focus:border-primary outline-none py-1">
+                        class="border-border/50 focus:border-primary w-full border-b bg-transparent py-1 text-xs outline-none">
                 </div>
             </div>
         @empty
-            <div class="flex flex-col items-center justify-center h-full text-gray-400 gap-2 opacity-70">
+            <div class="flex h-full flex-col items-center justify-center gap-2 text-gray-400 opacity-70">
                 <i class="bi bi-cart-x text-4xl"></i>
                 <p class="text-sm font-semibold">O carrinho está vazio</p>
             </div>
@@ -298,68 +298,65 @@ new class extends Component {
     </div>
 
     {{-- Rodapé do Carrinho --}}
-    <div class="border-t border-slate-200 p-4 space-y-3">
+    <div class="space-y-3 border-t border-slate-200 p-4">
         {{-- Exibe mensagens de erro caso existam --}}
         @error('cart')
-            <span class="text-red-500 text-xs font-bold block">{{ $message }}</span>
+            <span class="block text-xs font-bold text-red-500">{{ $message }}</span>
         @enderror
         @error('paymentMethod')
-            <span class="text-red-500 text-xs font-bold block">{{ $message }}</span>
+            <span class="block text-xs font-bold text-red-500">{{ $message }}</span>
         @enderror
         @error('checkout')
-            <span class="text-red-500 text-xs font-bold block">{{ $message }}</span>
+            <span class="block text-xs font-bold text-red-500">{{ $message }}</span>
         @enderror
 
         <div>
-            <p class="text-xs font-bold text-description uppercase tracking-wider mb-2">
+            <p class="text-description mb-2 text-xs font-bold uppercase tracking-wider">
                 pagamento
             </p>
             <div class="grid grid-cols-3 gap-2">
                 {{-- Botão Cartão --}}
                 <button type="button" wire:click="$set('paymentMethod', 'cartao')"
-                    class="cursor-pointer flex flex-col items-center py-2 rounded-xl text-xs font-bold transition-all border-2
-                    {{ $paymentMethod === 'cartao' ? 'bg-primary text-white ' : 'bg-input text-description border-transparent hover:bg-primary/20' }}">
+                    class="{{ $paymentMethod === 'cartao' ? 'bg-primary text-white ' : 'bg-input text-description border-transparent hover:bg-primary/20' }} flex cursor-pointer flex-col items-center rounded-xl border-2 py-2 text-xs font-bold transition-all">
                     <i class="bi bi-credit-card text-lg"></i>
                     Cartão
                 </button>
                 {{-- Botão Pix --}}
                 <button type="button" wire:click="$set('paymentMethod', 'pix')"
-                    class="cursor-pointer flex flex-col items-center py-1 rounded-xl text-xs font-bold transition-all border-2
-                    {{ $paymentMethod === 'pix' ? 'bg-primary text-white' : 'bg-input text-description border-transparent hover:bg-primary/20' }}">
+                    class="{{ $paymentMethod === 'pix' ? 'bg-primary text-white' : 'bg-input text-description border-transparent hover:bg-primary/20' }} flex cursor-pointer flex-col items-center rounded-xl border-2 py-1 text-xs font-bold transition-all">
                     <i class="bi bi-phone text-lg"></i>
                     Pix
                 </button>
                 {{-- Botão Dinheiro --}}
                 <button type="button" wire:click="$set('paymentMethod', 'dinheiro')"
-                    class="cursor-pointer flex flex-col items-center py-2 rounded-xl text-xs font-bold transition-all border-2
-                    {{ $paymentMethod === 'dinheiro' ? 'bg-primary text-white' : 'bg-input text-description border-transparent hover:bg-primary/20' }}">
+                    class="{{ $paymentMethod === 'dinheiro' ? 'bg-primary text-white' : 'bg-input text-description border-transparent hover:bg-primary/20' }} flex cursor-pointer flex-col items-center rounded-xl border-2 py-2 text-xs font-bold transition-all">
                     <i class="bi bi-cash text-lg"></i>
                     Dinheiro
                 </button>
             </div>
             {{-- Calcular troco se for dinheiro --}}
             @if ($paymentMethod === 'dinheiro')
-                <div class="mt-3 bg-gray-50 border border-gray-200 rounded-xl p-3 space-y-2 transition-all">
-                    <label class="text-xs font-bold text-description uppercase tracking-wider">
+                <div class="mt-3 space-y-2 rounded-xl border border-gray-200 bg-gray-50 p-3 transition-all">
+                    <label class="text-description text-xs font-bold uppercase tracking-wider">
                         Valor Recebido do Cliente
                     </label>
                     <div class="relative w-full">
                         <span
-                            class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-sm pointer-events-none">R$</span>
+                            class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold text-gray-500">R$</span>
                         <input type="text" wire:model.live.debounce.300ms="receivedValue" placeholder="Ex: 50,00"
-                            class="w-full font-bold text-description border border-border bg-white pl-9 pr-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg">
+                            class="text-description border-border ring-offset-background focus-visible:ring-primary w-full rounded-lg border bg-white py-2 pl-9 pr-3 text-sm font-bold focus-visible:outline-none focus-visible:ring-2">
                     </div>
 
                     @error('receivedValue')
-                        <span class="text-red-500 text-xs font-bold block">{{ $message }}</span>
+                        <span class="block text-xs font-bold text-red-500">{{ $message }}</span>
                     @enderror
 
                     {{-- Exibição do Troco em Tempo Real --}}
                     @if ($receivedValue)
-                        <div class="flex justify-between items-center text-sm pt-2 border-t border-gray-200 mt-2">
+                        <div class="mt-2 flex items-center justify-between border-t border-gray-200 pt-2 text-sm">
                             <span class="font-bold text-gray-500">Troco a devolver:</span>
                             <span
-                                class="font-extrabold {{ $this->change > 0 ? 'text-green-600' : 'text-gray-400' }} text-md">
+                                class="{{ $this->change > 0 ? 'text-green-600' : 'text-gray-400' }} text-md font-extrabold">
                                 R$ {{ number_format($this->change, 2, ',', '.') }}
                             </span>
                         </div>
@@ -367,16 +364,16 @@ new class extends Component {
                 </div>
             @endif
         </div>
-        <div class="bg-primary/5 rounded-xl p-3 flex items-center justify-between">
+        <div class="bg-primary/5 flex items-center justify-between rounded-xl p-3">
             <span class="text-sm font-bold">
                 Total
             </span>
-            <span class="text-2xl font-extrabold text-primary">
+            <span class="text-primary text-2xl font-extrabold">
                 R$ {{ number_format($this->cartTotal, 2, ',', '.') }}
             </span>
         </div>
         <button type="button" wire:click="checkout" wire:loading.attr="disabled" {{ empty($cart) ? 'disabled' : '' }}
-            class="cursor-pointer inline-flex items-center justify-center whitespace-nowrap ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 w-full h-14 rounded-xl text-white font-extrabold gap-2">
+            class="ring-offset-background focus-visible:ring-ring bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-14 w-full cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-xl px-4 py-2 font-extrabold text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
             <i class="bi bi-check-circle"></i>
             Finalizar Venda
         </button>

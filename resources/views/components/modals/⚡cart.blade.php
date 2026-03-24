@@ -71,35 +71,35 @@ new class extends Component {
         x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-50"
         x-transition:leave-start="opacity-100 scale-100 translate-y-0"
         x-transition:leave-end="opacity-0 scale-95 translate-y-4"
-        class="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 relative z-10">
+        class="relative z-10 w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
 
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-bold flex gap-2 items-center justify-center">
+        <div class="mb-4 flex items-center justify-between">
+            <h3 class="flex items-center justify-center gap-2 text-lg font-bold">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-weight-icon lucide-weight w-5 h-5 text-primary">
+                    class="lucide lucide-weight-icon lucide-weight text-primary h-5 w-5">
                     <circle cx="12" cy="5" r="3" />
                     <path
                         d="M6.5 8a2 2 0 0 0-1.905 1.46L2.1 18.5A2 2 0 0 0 4 21h16a2 2 0 0 0 1.925-2.54L19.4 9.5A2 2 0 0 0 17.48 8Z" />
                 </svg> Informar Peso
             </h3>
-            <button type="button" @click="open = false" class="text-gray-400 hover:text-gray-600 cursor-pointer">
+            <button type="button" @click="open = false" class="cursor-pointer text-gray-400 hover:text-gray-600">
                 <i class="bi bi-x-lg"></i>
             </button>
         </div>
 
         <form wire:submit="save" autocomplete="off">
             @error('weight')
-                <span class="text-red-500 text-xs">
+                <span class="text-xs text-red-500">
                     {{ $message }}
                 </span>
             @enderror
             <div class="space-y-4">
                 <div class="bg-input rounded-xl p-3 text-center">
-                    <p class="font-bold text-foreground">
+                    <p class="text-foreground font-bold">
                         {{ $productName }}
                     </p>
-                    <p class="text-xs text-description">
+                    <p class="text-description text-xs">
                         R$ {{ number_format($productPrice, 2, ',', '.') }}/kg
                     </p>
                 </div>
@@ -108,14 +108,14 @@ new class extends Component {
                         Peso (kg)
                     </label>
                     <input type="text" id="peso" wire:model="weight" placeholder="Ex: 0,500"
-                        class="flex w-full border border-border bg-background px-3 py-2 text-center ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg h-11">
+                        class="border-border bg-background ring-offset-background focus-visible:ring-primary flex h-11 w-full rounded-lg border px-3 py-2 text-center focus-visible:outline-none focus-visible:ring-2">
                 </div>
 
                 <div class="flex gap-3">
                     <button type="button" @click="open = false"
-                        class="flex-1 px-4 py-2 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer">Cancelar</button>
+                        class="flex-1 cursor-pointer rounded-lg border border-gray-200 px-4 py-2 text-gray-600 transition-colors hover:bg-gray-50">Cancelar</button>
                     <button type="submit"
-                        class="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-transform active:scale-95 cursor-pointer">Confirmar</button>
+                        class="bg-primary hover:bg-primary/90 flex-1 cursor-pointer rounded-lg px-4 py-2 text-white transition-transform active:scale-95">Confirmar</button>
                 </div>
             </div>
         </form>

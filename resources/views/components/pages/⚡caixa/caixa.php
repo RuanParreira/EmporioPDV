@@ -8,8 +8,6 @@ use App\Models\Product;
 use Livewire\Attributes\Computed;
 use Livewire\WithPagination;
 
-use function PHPSTORM_META\type;
-
 new #[Layout('layouts.default')] #[Title('Caixa')] class extends Component {
     use WithPagination;
     public string $search = '';
@@ -29,7 +27,7 @@ new #[Layout('layouts.default')] #[Title('Caixa')] class extends Component {
     #[Computed]
     public function categories()
     {
-        return Category::orderBy('name')->get();
+        return Category::select('id', 'name')->orderBy('name')->get();
     }
 
     #[Computed]
@@ -50,7 +48,7 @@ new #[Layout('layouts.default')] #[Title('Caixa')] class extends Component {
     public function addSearchedProduct()
     {
         if (!empty($this->searchId)) {
-            $product = Product::where('id', $this->searchId)
+            $product = Product::where('code', $this->searchId)
                 ->where('active', true)
                 ->first();
 

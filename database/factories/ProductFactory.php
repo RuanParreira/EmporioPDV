@@ -20,6 +20,7 @@ class ProductFactory extends Factory
     {
         return [
             'category_id' => null,
+            'code' => $this->faker->numberBetween(1, 999),
             'name' => ucfirst($this->faker->unique()->word()),
             'description' => $this->faker->sentence(),
             'price' => $this->faker->randomFloat(2, 5, 200),

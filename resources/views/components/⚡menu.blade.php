@@ -112,10 +112,12 @@ new class extends Component {
                 {{ Str::of($user?->name ?? 'US')->trim()->substr(0, 2)->upper() }}
             </div>
             <div class="flex flex-col flex-1 overflow-hidden">
-                <span class="text-sm font-semibold text-slate-800 truncate">
+                <span class="text-sm font-semibold text-slate-800 truncate capitalize">
                     {{ $user?->name ?? 'Usuário' }}
                 </span>
-                <span class="text-xs text-slate-400 truncate">{{ $user->role }}</span>
+                <span class="text-xs text-slate-400 truncate capitalize">
+                    {{ $user->role }}
+                </span>
             </div>
             <button type="button" wire:click="logout"
                 class="cursor-pointer text-slate-400 hover:text-[#4e1c53] transition-colors p-1">
