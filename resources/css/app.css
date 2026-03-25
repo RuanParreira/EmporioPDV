@@ -21,7 +21,7 @@
     --color-background: oklch(96.7% 0.001 286.375);
     --color-description: oklch(55.1% 0.027 264.364);
     --color-border: oklch(87.2% 0.01 258.338);
-    --color-input: #f7f6f8;
+    --color-input: #f7f7f7;
 }
 
 @layer components {
@@ -31,5 +31,59 @@
 
     .item-menu-active {
         @apply flex items-center gap-3 px-3 py-2.5 rounded-xl bg-primary text-white shadow-sm hover:bg-primary hover:text-white;
+    }
+
+    .button-new {
+        @apply bg-primary hover:bg-primary/90 h-10 cursor-pointer rounded-xl px-4;
+        & span {
+            @apply text-white;
+        }
+    }
+
+    .input-search {
+        @apply border-border bg-input ring-offset-background focus-visible:ring-primary flex h-10 w-full rounded-xl border px-3 py-1 pl-10 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm;
+    }
+    .icon-input-search {
+        @apply text-description absolute left-3 top-1/2 -translate-y-1/2;
+    }
+
+    .modal {
+        @apply bg-background relative z-10 w-full max-w-xl rounded-2xl p-6 shadow-xl;
+    }
+
+    .input-modal {
+        @apply border-border bg-background ring-offset-background file:text-description focus-visible:ring-primary flex h-11 w-full rounded-xl border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm transition-all;
+    }
+
+    .modal-button {
+        @apply bg-primary hover:bg-primary/90 flex w-full cursor-pointer items-center justify-center rounded-xl px-4 py-3.5 text-sm font-bold text-white transition-transform active:scale-[0.98];
+    }
+
+    .table-default {
+        @apply overflow-hidden rounded-xl bg-white shadow-md;
+        table {
+            @apply w-full;
+            thead tr {
+                @apply border-border bg-primary border-b;
+                th {
+                    @apply p-4 text-left text-xs font-bold uppercase tracking-wider text-white;
+                }
+            }
+            tbody tr {
+                @apply border-border/50 hover:bg-description/10 border-b transition-colors;
+            }
+            tbody td {
+                @apply p-4 align-middle;
+            }
+        }
+    }
+    .edit-button {
+        @apply ring-offset-background focus-visible:ring-primary hover:bg-primary/20 inline-flex h-10 w-10 items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors hover:cursor-pointer hover:text-purple-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+    }
+    .delete-button {
+        @apply ring-offset-background focus-visible:ring-primary hover:bg-primary/20 inline-flex h-10 w-10 cursor-pointer items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium text-red-500 transition-colors hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+    }
+    .active-button {
+        @apply ring-offset-background focus-visible:ring-primary inline-flex h-10 w-10 cursor-pointer items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
     }
 }

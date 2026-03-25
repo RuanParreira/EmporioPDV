@@ -129,8 +129,8 @@ new class extends Component {
 ?>
 
 {{-- Modal --}}
-<div x-data="{ open: @entangle('showModal') }" x-show="open" class="fixed inset-0 z-50 flex items-center justify-center p-4"
-    style="display: none;">
+<div x-data="{ open: @entangle('showModal') }" x-show="open" @keydown.escape.window="open = false"
+    class="fixed inset-0 z-50 flex items-center justify-center p-4" style="display: none;">
     {{-- Overlay (Fundo Escuro) --}}
     <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-50"
@@ -142,8 +142,7 @@ new class extends Component {
         x-transition:enter-start="opacity-0 scale-95 translate-y-4"
         x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-50"
         x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-        x-transition:leave-end="opacity-0 scale-95 translate-y-4"
-        class="relative z-10 w-full max-w-xl rounded-2xl bg-white p-6 shadow-xl">
+        x-transition:leave-end="opacity-0 scale-95 translate-y-4" class="modal">
 
         <div class="mb-6 flex items-center justify-between">
             <h3 class="text-xl font-bold text-gray-900">
@@ -157,7 +156,7 @@ new class extends Component {
         </div>
 
         <form wire:submit.prevent="save" autocomplete="off">
-            <div class="space-y-5">
+            <div class="space-y-4">
 
                 {{-- Campo Nome --}}
                 <div class="flex gap-4">
@@ -165,8 +164,7 @@ new class extends Component {
                         <label for="name" class="mb-1 block text-sm font-medium text-gray-700">Nome do
                             Produto</label>
                         {{-- Borda com a cor primary no focus simulando a seleção da imagem --}}
-                        <input id="name" type="text" wire:model="name"
-                            class="bg-input ring-offset-background focus-visible:ring-primary border-border flex h-11 w-full rounded-lg border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                        <input id="name" type="text" wire:model="name" class="input-modal"
                             placeholder="Digite o nome do produto">
                         @error('name')
                             <span class="mt-1 text-xs text-red-500">{{ $message }}</span>
@@ -177,8 +175,7 @@ new class extends Component {
                     <div class="w-40">
                         <label for="code" class="mb-1 block text-sm font-medium text-gray-700">Code do
                             Produto</label>
-                        <input id="code" type="text" wire:model.number="code"
-                            class="bg-input ring-offset-background focus-visible:ring-primary border-border flex h-11 w-full rounded-lg border px-3 py-2 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 md:text-sm"
+                        <input id="code" type="text" wire:model.number="code" class="input-modal"
                             placeholder="Ex: 152">
                         @error('code')
                             <span class="mt-1 text-xs text-red-500">{{ $message }}</span>
@@ -189,8 +186,7 @@ new class extends Component {
                 <div>
                     <label for="price" class="mb-1 block text-sm font-medium text-gray-700">Preço (R$)</label>
                     {{-- Borda com a cor primary no focus simulando a seleção da imagem --}}
-                    <input id="price" type="text" wire:model="price"
-                        class="bg-input ring-offset-background focus-visible:ring-primary border-border flex h-11 w-full rounded-lg border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                    <input id="price" type="text" wire:model="price" class="input-modal"
                         placeholder="Digite o preço">
                     @error('price')
                         <span class="mt-1 text-xs text-red-500">{{ $message }}</span>
@@ -240,7 +236,7 @@ new class extends Component {
                         @click="open = !open; if(open) $nextTick(() => $refs.searchInput.focus());"
                         @click.away="open = false"
                         @keydown.arrow-down.prevent="open = true; $nextTick(() => $refs.searchInput.focus());"
-                        class="bg-input border-border focus:ring-primary flex h-11 w-full items-center justify-between rounded-lg border px-3 py-2 transition-all focus:outline-none focus:ring-2 md:text-sm"
+                        class="input-modal flex items-center justify-between"
                         :class="{ 'text-gray-900': selectedId, 'text-gray-400': !selectedId }">
                         <span x-text="selectedName" class="truncate"></span>
                         <i class="bi bi-chevron-down text-gray-400 transition-transform duration-200"
@@ -305,7 +301,7 @@ new class extends Component {
                         <label class="flex-1 cursor-pointer">
                             <input type="radio" wire:model="measure_unit" value="UN" class="peer sr-only">
                             <div
-                                class="hover:bg-primary/20 peer-checked:bg-primary hover:peer-checked:bg-primary/90 peer-checked:border-primary flex items-center justify-center gap-2 rounded-xl border border-transparent bg-gray-100 py-3 text-sm font-semibold text-gray-500 transition-all peer-checked:text-white">
+                                class="hover:bg-primary/20 peer-checked:bg-primary hover:peer-checked:bg-primary/90 peer-checked:border-primary flex items-center justify-center gap-2 rounded-xl border border-transparent bg-gray-300 py-3 text-sm font-semibold text-gray-500 transition-all peer-checked:text-white">
                                 <i class="bi bi-box-seam"></i>
                                 Por Unidade
                             </div>
@@ -315,7 +311,7 @@ new class extends Component {
                         <label class="flex-1 cursor-pointer">
                             <input type="radio" wire:model="measure_unit" value="KG" class="peer sr-only">
                             <div
-                                class="hover:bg-primary/20 peer-checked:bg-primary hover:peer-checked:bg-primary/90 peer-checked:border-primary flex items-center justify-center gap-2 rounded-xl border border-transparent bg-gray-100 py-3 text-sm font-semibold text-gray-500 transition-all peer-checked:text-white">
+                                class="hover:bg-primary/20 peer-checked:bg-primary hover:peer-checked:bg-primary/90 peer-checked:border-primary flex items-center justify-center gap-2 rounded-xl border border-transparent bg-gray-300 py-3 text-sm font-semibold text-gray-500 transition-all peer-checked:text-white">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round"
@@ -335,9 +331,8 @@ new class extends Component {
 
             </div>
             {{-- Botão de Submeter --}}
-            <div class="mt-8">
-                <button type="submit" wire:loading.attr="disabled" wire:target="save"
-                    class="bg-primary hover:bg-primary/90 flex w-full cursor-pointer items-center justify-center rounded-xl px-4 py-3.5 text-sm font-bold text-white transition-transform active:scale-[0.98]">
+            <div class="mt-6">
+                <button type="submit" wire:loading.attr="disabled" wire:target="save" class="modal-button">
                     <span wire:loading.remove wire:target="save">
                         {{ $productId ? 'Atualizar Produto' : 'Criar Produto' }}
                     </span>

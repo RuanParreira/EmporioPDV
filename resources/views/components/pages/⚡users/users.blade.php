@@ -2,9 +2,8 @@
     {{-- Titulo --}}
     <div class="flex flex-col justify-between lg:flex-row">
         <x-titulo titulo="Usuários" descricao="Gerencie os usuários do sistema" />
-        <button type="button" x-on:click="$dispatch('open-user-modal')"
-            class="bg-primary hover:bg-primary/90 h-10 cursor-pointer rounded-lg px-4">
-            <span class="text-white">
+        <button type="button" x-on:click="$dispatch('open-user-modal')" class="button-new">
+            <span>
                 + Novo Usuário
             </span>
         </button>
@@ -15,37 +14,37 @@
     @enderror
 
     {{-- Tabela de Usuarios --}}
-    <div class="overflow-hidden rounded-xl bg-white shadow-md">
-        <table class="w-full">
+    <div class="table-default">
+        <table>
             <thead>
-                <tr class="border-border bg-primary border-b">
-                    <th class="p-4 text-left text-xs font-bold uppercase tracking-wider text-white">
+                <tr>
+                    <th>
                         Nome
                     </th>
-                    <th class="p-4 text-left text-xs font-bold uppercase tracking-wider text-white">
+                    <th>
                         Email
                     </th>
-                    <th class="p-4 text-left text-xs font-bold uppercase tracking-wider text-white">
+                    <th>
                         Cargo
                     </th>
-                    <th class="p-4 text-right text-xs font-bold uppercase tracking-wider text-white">
+                    <th class="text-right">
                         Ações
                     </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($this->users as $user)
-                    <tr class="border-border/50 hover:bg-description/10 border-b transition-colors">
-                        <td class="p-4 align-middle font-semibold">
+                    <tr>
+                        <td class="font-semibold">
                             <div class="flex items-center gap-2">
                                 <i class="bi bi-people text-purple-800"></i>
                                 <span class="capitalize">{{ $user->name }}</span>
                             </div>
                         </td>
-                        <td class="p-4 align-middle">
+                        <td>
                             <span>{{ $user->email }}</span>
                         </td>
-                        <td class="p-4 align-middle">
+                        <td>
                             @php
                                 [$badgeClass, $iconClass] = match ($user->role) {
                                     'owner' => ['bg-purple-500/10 w-18 text-purple-600', 'bi bi-stars'],
@@ -60,18 +59,18 @@
                                 <span class="capitalize">{{ $user->role }}</span>
                             </span>
                         </td>
-                        <td class="p-4 text-right align-middle">
+                        <td class="text-right">
                             @can('update', $user)
                                 <button type="button"
                                     x-on:click="$dispatch('open-user-modal', { id: {{ $user->id }} })"
-                                    class="ring-offset-background focus-visible:ring-ring hover:bg-primary/20 inline-flex h-10 w-10 items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors hover:cursor-pointer hover:text-purple-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
+                                    class="edit-button">
                                     <i class="bi bi-pen text-md"></i>
                                 </button>
                             @endcan
                             @can('delete', $user)
                                 <button type="button" wire:click="delete({{ $user->id }})"
                                     wire:confirm.prompt="Você tem certeza?\n\nDigite DELETAR para confirmar|DELETAR"
-                                    class="ring-offset-background focus-visible:ring-ring hover:bg-primary/20 inline-flex h-10 w-10 cursor-pointer items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium text-red-500 transition-colors hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
+                                    class="delete-button">
                                     <i class="bi bi-trash3 text-md"></i>
                                 </button>
                             @endcan

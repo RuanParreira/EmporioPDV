@@ -64,8 +64,8 @@ new class extends Component {
 ?>
 
 
-<div x-data="{ open: @entangle('showModal') }" x-show="open" class="fixed inset-0 z-50 flex items-center justify-center p-4"
-    style="display: none;">
+<div x-data="{ open: @entangle('showModal') }" x-show="open" @keydown.escape.window="open = false"
+    class="fixed inset-0 z-50 flex items-center justify-center p-4" style="display: none;">
     {{-- Overlay (Fundo Escuro) --}}
     <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-50"
@@ -77,8 +77,7 @@ new class extends Component {
         x-transition:enter-start="opacity-0 scale-95 translate-y-4"
         x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-50"
         x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-        x-transition:leave-end="opacity-0 scale-95 translate-y-4"
-        class="relative z-10 w-full max-w-xl rounded-2xl bg-white p-6 shadow-xl">
+        x-transition:leave-end="opacity-0 scale-95 translate-y-4" class="modal max-w-sm">
 
         <div class="mb-4 flex items-center justify-between">
             <h3 class="text-lg font-bold">
@@ -95,16 +94,20 @@ new class extends Component {
                     <label for="name" class="mb-1 block text-sm font-medium text-gray-700">Nome da
                         Categoria</label>
                     <input id="name" type="text" wire:model="name" placeholder="Digite o nome da categoria"
-                        class="border-border bg-background ring-offset-background focus-visible:ring-primary flex h-11 w-full rounded-lg border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm">
+                        class="input-modal">
                     @error('name')
                         <span class="mt-1 text-xs text-red-500">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="flex gap-3">
-                    <button type="button" @click="open = false"
-                        class="flex-1 cursor-pointer rounded-lg border border-gray-200 px-4 py-2 text-gray-600 transition-colors hover:bg-gray-50">Cancelar</button>
-                    <button type="submit"
-                        class="bg-primary hover:bg-primary/90 flex-1 cursor-pointer rounded-lg px-4 py-2 text-white transition-transform active:scale-95">Salvar</button>
+                    <button type="submit" wire:loading.attr"disable" wire:target="save" class="modal-button">
+                        <span wire:loading.remove wire:target="save">
+                            Salvar
+                        </span>
+                        <span wire:loading wire:target="save">
+                            Salvando...
+                        </span>
+                    </button>
                 </div>
             </div>
         </form>

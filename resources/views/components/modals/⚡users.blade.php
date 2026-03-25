@@ -126,8 +126,8 @@ new class extends Component {
 ?>
 
 {{-- Modal --}}
-<div x-data="{ open: @entangle('showModal') }" x-show="open" class="fixed inset-0 z-50 flex items-center justify-center p-4"
-    style="display: none;">
+<div x-data="{ open: @entangle('showModal') }" x-show="open" @keydown.escape.window="open = false"
+    class="fixed inset-0 z-50 flex items-center justify-center p-4" style="display: none;">
     {{-- Overlay (Fundo Escuro) --}}
     <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-50"
@@ -139,8 +139,7 @@ new class extends Component {
         x-transition:enter-start="opacity-0 scale-95 translate-y-4"
         x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-50"
         x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-        x-transition:leave-end="opacity-0 scale-95 translate-y-4"
-        class="relative z-10 w-full max-w-xl rounded-2xl bg-white p-6 shadow-xl">
+        x-transition:leave-end="opacity-0 scale-95 translate-y-4" class="modal">
 
         <div class="mb-6 flex items-center justify-between">
             <h3 class="text-xl font-bold text-gray-900">
@@ -154,14 +153,13 @@ new class extends Component {
         </div>
 
         <form wire:submit.prevent="save" autocomplete="off">
-            <div class="space-y-5">
+            <div class="space-y-4">
 
                 {{-- Campo Nome --}}
                 <div>
                     <label for="name" class="mb-1 block text-sm font-medium text-gray-700">Nome</label>
                     {{-- Borda com a cor primary no focus simulando a seleção da imagem --}}
-                    <input id="name" type="text" wire:model.blur="name"
-                        class="bg-background ring-offset-background focus-visible:ring-primary border-border flex h-11 w-full rounded-lg border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                    <input id="name" type="text" wire:model="name" class="input-modal"
                         placeholder="Digite o nome">
                     @error('name')
                         <span class="mt-1 text-xs text-red-500">{{ $message }}</span>
@@ -171,8 +169,7 @@ new class extends Component {
                 <div>
                     <label for="email" class="mb-1 block text-sm font-medium text-gray-700">Email</label>
                     {{-- Borda com a cor primary no focus simulando a seleção da imagem --}}
-                    <input id="email" type="email" wire:model="email"
-                        class="bg-background ring-offset-background focus-visible:ring-primary border-border flex h-11 w-full rounded-lg border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                    <input id="email" type="email" wire:model="email" class="input-modal"
                         placeholder="Digite o email">
                     @error('email')
                         <span class="mt-1 text-xs text-red-500">{{ $message }}</span>
@@ -199,8 +196,7 @@ new class extends Component {
 
                     {{-- Exibe o input sempre se for criação, ou apenas se o toggle estiver ligado na edição --}}
                     @if (!$userId || $changePassword)
-                        <input id="password" type="password" wire:model="password"
-                            class="border-border bg-background ring-offset-background focus-visible:ring-primary flex h-11 w-full rounded-lg border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                        <input id="password" type="password" wire:model="password" class="input-modal"
                             placeholder="Digite a {{ $userId ? 'nova ' : '' }}senha">
                         @error('password')
                             <span class="mt-1 text-xs text-red-500">{{ $message }}</span>
@@ -217,7 +213,7 @@ new class extends Component {
                             <label class="flex-1 cursor-pointer">
                                 <input type="radio" wire:model="role" value="caixa" class="peer sr-only">
                                 <div
-                                    class="hover:bg-primary/20 peer-checked:bg-primary hover:peer-checked:bg-primary/90 peer-checked:border-primary flex items-center justify-center gap-2 rounded-xl border border-transparent bg-gray-100 py-3 text-sm font-semibold text-gray-500 transition-all peer-checked:text-white">
+                                    class="hover:bg-primary/20 peer-checked:bg-primary hover:peer-checked:bg-primary/90 peer-checked:border-primary flex items-center justify-center gap-2 rounded-xl border border-transparent bg-gray-300 py-3 text-sm font-semibold text-gray-500 transition-all peer-checked:text-white">
                                     <i class="bi bi-shop-window"></i>
                                     Caixa
                                 </div>
@@ -227,7 +223,7 @@ new class extends Component {
                             <label class="flex-1 cursor-pointer">
                                 <input type="radio" wire:model="role" value="admin" class="peer sr-only">
                                 <div
-                                    class="hover:bg-primary/20 peer-checked:bg-primary hover:peer-checked:bg-primary/90 peer-checked:border-primary flex items-center justify-center gap-2 rounded-xl border border-transparent bg-gray-100 py-3 text-sm font-semibold text-gray-500 transition-all peer-checked:text-white">
+                                    class="hover:bg-primary/20 peer-checked:bg-primary hover:peer-checked:bg-primary/90 peer-checked:border-primary flex items-center justify-center gap-2 rounded-xl border border-transparent bg-gray-300 py-3 text-sm font-semibold text-gray-500 transition-all peer-checked:text-white">
                                     <i class="bi bi-shield-check"></i>
                                     Administrador
                                 </div>
@@ -240,9 +236,8 @@ new class extends Component {
                 @endif
             </div>
             {{-- Botão de Submeter Único e Largo --}}
-            <div class="mt-8">
-                <button type="submit" wire:loading.attr="disabled" wire:target="save"
-                    class="bg-primary hover:bg-primary/90 flex w-full cursor-pointer items-center justify-center rounded-xl px-4 py-3.5 text-sm font-bold text-white transition-transform active:scale-[0.98]">
+            <div class="mt-6">
+                <button type="submit" wire:loading.attr="disabled" wire:target="save" class="modal-button">
                     <span wire:loading.remove
                         wire:target="save">{{ $userId ? 'Salvar Alterações' : 'Criar Usuário' }}</span>
                     <span wire:loading wire:target="save">Salvando...</span>

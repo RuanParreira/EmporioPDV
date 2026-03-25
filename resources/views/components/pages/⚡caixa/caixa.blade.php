@@ -5,15 +5,13 @@
             Nova Venda
         </h1>
         <div class="mb-4 flex flex-wrap items-center gap-3">
-            <div class="w-20">
+            <div class="w-18">
                 <input type="text" x-ref="idInput" wire:model="searchId" wire:keydown.enter="addSearchedProduct"
-                    class="border-border bg-input ring-offset-background focus-visible:ring-primary flex h-11 w-full rounded-xl border px-3 py-2 text-center text-base file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                    placeholder="#CODE">
+                    class="input-search pl-2 text-center" placeholder="#CODE">
             </div>
             <div class="relative w-64">
-                <i class="bi bi-search text-description text-md absolute left-3 top-1/2 -translate-y-1/2"></i>
-                <input type="text" type="text" wire:model.live.debounce.200ms="search"
-                    class="border-border bg-input ring-offset-background focus-visible:ring-primary flex h-11 w-full rounded-xl border px-3 py-2 pl-10 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                <i class="bi bi-search icon-input-search"></i>
+                <input type="text" type="text" wire:model.live.debounce.200ms="search" class="input-search"
                     placeholder="Buscar produto...">
             </div>
             @if ($this->categories->isNotEmpty())

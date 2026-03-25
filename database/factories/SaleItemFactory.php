@@ -19,12 +19,14 @@ class SaleItemFactory extends Factory
      */
     public function definition(): array
     {
+        $product = Product::inRandomOrder()->first() ?? Product::factory()->create();
         return [
             'sale_id' => Sale::factory(),
-            'product_id' => Product::factory(),
-            'quantity' => $this->faker->numberBetween(1, 5), // Comprou de 1 a 5 unidades
-            'unit_price' => $this->faker->randomFloat(2, 5, 100), // Preço falso
-            'notes' => $this->faker->optional(0.3)->sentence(3), // 30% de chance de ter uma observação (ex: "Sem cebola")
+            'product_id' => $product->id,
+            'quantity' => $this->faker->randomFloat(2, 0.1, 5),
+            'product_name' => $product->name,
+            'unit_price' => $product->price,
+            'notes' => $this->faker->optional(0.3)->sentence(3),
         ];
     }
 }

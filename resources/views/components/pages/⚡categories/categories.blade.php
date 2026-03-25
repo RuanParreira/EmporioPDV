@@ -2,9 +2,8 @@
     {{-- Titulo --}}
     <div class="flex flex-col justify-between lg:flex-row">
         <x-titulo titulo="Categorias" descricao="Organize seus produtos em categorias" />
-        <button type="button" x-on:click="$dispatch('open-category-modal')"
-            class="bg-primary hover:bg-primary/90 h-10 cursor-pointer rounded-lg px-4">
-            <span class="text-white">
+        <button type="button" x-on:click="$dispatch('open-category-modal')" class="button-new">
+            <span>
                 + Nova Categoria
             </span>
         </button>

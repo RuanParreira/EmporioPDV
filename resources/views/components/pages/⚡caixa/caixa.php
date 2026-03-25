@@ -42,7 +42,7 @@ new #[Layout('layouts.default')] #[Title('Caixa')] class extends Component {
             ->when($this->filter !== null, function ($query) {
                 $query->where('category_id', $this->filter);
             })
-            ->paginate(20);
+            ->paginate(24);
     }
 
     public function addSearchedProduct()

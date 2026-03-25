@@ -100,7 +100,6 @@
             <p style="margin: 2px 0;">Tel: (77) 8166-2230</p>
         </div>
 
-
         <div class="divider"></div>
 
         <div class="mb-2">

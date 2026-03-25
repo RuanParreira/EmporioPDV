@@ -20,11 +20,11 @@ class SaleFactory extends Factory
     public function definition(): array
     {
         return [
-            'sale_id' => Sale::factory(),
-            'product_id' => Product::factory(),
-            'quantity' => $this->faker->numberBetween(1, 5),
-            'unit_price' => $this->faker->randomFloat(2, 5, 100),
-            'notes' => $this->faker->optional(0.3)->sentence(3),
+            'user_id' => User::factory()->state(['role' => 'caixa']),
+            'total_value' => $this->faker->randomFloat(2, 50, 500),
+            'payment_method' => $this->faker->randomElement(['dinheiro', 'cartao', 'pix']),
+            'received_value' => $this->faker->randomFloat(2, 50, 500),
+            'created_at' => $this->faker->dateTimeBetween('-7 days', 'now'),
         ];
     }
 }
