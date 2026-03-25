@@ -4,11 +4,9 @@ use Livewire\Component;
 use Illuminate\Support;
 
 new class extends Component {
-    public $user;
-
-    public function mount(): void
+    public function User()
     {
-        $this->user = Auth::user();
+        return Auth::user();
     }
 
     public function logout(): void
@@ -22,105 +20,124 @@ new class extends Component {
 };
 ?>
 
-<aside
-    class="bg-white shadow-sm border border-slate-100
-    flex flex-col bg-sidebar text-sidebar-foreground transition-all duration-300 w-64 min-h-screen
-    ">
-    <div class="p-6 flex items-center gap-4">
-        <div class="w-11 h-11 rounded-full bg-[#4e1c53] text-white flex items-center justify-center shrink-0 shadow-sm">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo da Empressa">
+<aside x-data="{ expanded: $persist(true) }" :class="expanded ? 'w-64' : 'w-20'"
+    class="relative flex min-h-screen flex-col border border-slate-100 bg-white shadow-sm transition-all duration-300">
+
+    <button @click="expanded = !expanded"
+        class="absolute -right-3 top-8 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition-colors hover:text-[#4e1c53]">
+        <i class="bi text-xs" :class="expanded ? 'bi-chevron-left' : 'bi-chevron-right'"></i>
+    </button>
+
+    <div class="flex items-center gap-4 px-4 py-6">
+        <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#4e1c53] text-white shadow-sm">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo da Empresa" class="object-contain">
         </div>
-        <div class="flex flex-col">
-            <span class="text-[#4e1c53] font-bold text-base leading-tight">Empório do Açaí</span>
-            <span class="text-slate-400 text-xs font-medium">Painel de Navegação</span>
+        <div class="flex flex-col overflow-hidden" x-show="expanded" x-transition>
+            <span class="whitespace-nowrap text-base font-bold leading-tight text-[#4e1c53]">Empório do Açaí</span>
+            <span class="whitespace-nowrap text-xs font-medium text-slate-400">Painel de Navegação</span>
         </div>
     </div>
 
-    <nav class="flex-1 px-2 py-2 space-y-4">
+    <nav class="flex-1 space-y-4 px-2 py-2">
 
-        <a href="/dashboard" wire:navigate @class([
-            'item-menu',
+        {{-- Dashboard --}}
+        <a href="{{ route('dashboard') }}" wire:navigate @class([
+            'item-menu flex items-center gap-3',
             'item-menu-active' => request()->routeIs('dashboard'),
-        ])>
-            <i class="bi bi-grid text-xl"></i>
-            <span class="font-medium text-sm">Dashboard</span>
+        ])
+            :class="expanded ? 'justify-start px-3' : 'justify-center px-0'">
+            <i class="bi bi-grid shrink-0 text-xl"></i>
+            <span class="whitespace-nowrap text-sm font-medium" x-show="expanded">Dashboard</span>
         </a>
 
-        <a href="/caixa" wire:navigate @class([
-            'item-menu',
+        {{-- Caixa --}}
+        <a href="{{ route('caixa') }}" wire:navigate @class([
+            'item-menu flex items-center gap-3',
             'item-menu-active' => request()->routeIs('caixa'),
-        ])>
-            <i class="bi bi-cart text-xl"></i>
-            <span class="font-medium text-sm">Caixa</span>
+        ])
+            :class="expanded ? 'justify-start px-3' : 'justify-center px-0'">
+            <i class="bi bi-cart shrink-0 text-xl"></i>
+            <span class="whitespace-nowrap text-sm font-medium" x-show="expanded">Caixa</span>
         </a>
 
-
-        <a href="/products" wire:navigate @class([
-            'item-menu',
+        {{-- Produtos --}}
+        <a href="{{ route('products') }}" wire:navigate @class([
+            'item-menu flex items-center gap-3',
             'item-menu-active' => request()->routeIs('products'),
-        ])>
-            <i class="bi bi-archive text-xl"></i>
-            <span class="font-medium text-sm">Produtos</span>
+        ])
+            :class="expanded ? 'justify-start px-3' : 'justify-center px-0'">
+            <i class="bi bi-archive shrink-0 text-xl"></i>
+            <span class="whitespace-nowrap text-sm font-medium" x-show="expanded">Produtos</span>
         </a>
 
+        {{-- Categorias --}}
         @can('viewAny', \App\Models\Category::class)
-            <a href="/categories" wire:navigate @class([
-                'item-menu',
+            <a href="{{ route('categories') }}" wire:navigate @class([
+                'item-menu flex items-center gap-3',
                 'item-menu-active' => request()->routeIs('categories'),
-            ])>
-                <i class="bi bi-tags text-xl"></i>
-                <span class="font-medium text-sm">Categorias</span>
+            ])
+                :class="expanded ? 'justify-start px-3' : 'justify-center px-0'">
+                <i class="bi bi-tags shrink-0 text-xl"></i>
+                <span class="whitespace-nowrap text-sm font-medium" x-show="expanded">Categorias</span>
             </a>
         @endcan
 
+        {{-- Usuarios --}}
         @can('viewAny', \App\Models\User::class)
-            <a href="/users" wire:navigate @class([
-                'item-menu',
+            <a href="{{ route('users') }}" wire:navigate @class([
+                'item-menu flex items-center gap-3',
                 'item-menu-active' => request()->routeIs('users'),
-            ])>
-                <i class="bi bi-people text-xl"></i>
-                <span class="font-medium text-sm">Usuários</span>
+            ])
+                :class="expanded ? 'justify-start px-3' : 'justify-center px-0'">
+                <i class="bi bi-people shrink-0 text-xl"></i>
+                <span class="whitespace-nowrap text-sm font-medium" x-show="expanded">Usuários</span>
             </a>
         @endcan
 
-
-        <a href="/sales" wire:navigate @class([
-            'item-menu',
+        {{-- Vendas --}}
+        <a href="{{ route('sales') }}" wire:navigate @class([
+            'item-menu flex items-center gap-3',
             'item-menu-active' => request()->routeIs('sales'),
-        ])>
-            <i class="bi bi-wallet text-xl"></i>
-            <span class="font-medium text-sm">Vendas</span>
+        ])
+            :class="expanded ? 'justify-start px-3' : 'justify-center px-0'">
+            <i class="bi bi-wallet shrink-0 text-xl"></i>
+            <span class="whitespace-nowrap text-sm font-medium" x-show="expanded">Vendas</span>
         </a>
 
+        {{-- implementação futuras --}}
         {{-- Configurações --}}
-        <hr class="my-3 border-slate-200 mx-3">
+        {{-- <hr class="my-3 border-slate-200 mx-3">
 
-        <a href="/config" wire:navigate @class([
+        <a href="{{ route('config') }}" wire:navigate @class([
             'item-menu',
             'item-menu-active' => request()->routeIs('config'),
         ])>
             <i class="bi bi-gear text-xl"></i>
             <span class="font-medium text-sm">Configurações</span>
-        </a>
+        </a> --}}
 
     </nav>
 
+
     <div class="mt-auto border-t border-slate-100 p-4">
-        <div class="flex items-center gap-3">
-            <div
-                class="w-10 h-10 rounded-full bg-purple-100 text-[#4e1c53] flex items-center justify-center font-bold text-sm shrink-0">
-                {{ Str::of($user?->name ?? 'US')->trim()->substr(0, 2)->upper() }}
-            </div>
-            <div class="flex flex-col flex-1 overflow-hidden">
-                <span class="text-sm font-semibold text-slate-800 truncate capitalize">
-                    {{ $user?->name ?? 'Usuário' }}
-                </span>
-                <span class="text-xs text-slate-400 truncate capitalize">
-                    {{ $user->role }}
-                </span>
-            </div>
-            <button type="button" wire:click="logout"
-                class="cursor-pointer text-slate-400 hover:text-[#4e1c53] transition-colors p-1">
+        <div class="flex items-center gap-3" :class="expanded ? '' : 'flex-col justify-center gap-4'">
+            @if ($this->User())
+                <div
+                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-purple-100 text-sm font-bold text-[#4e1c53]">
+                    {{ Str::of($this->User()->name)->trim()->substr(0, 2)->upper() }}
+                </div>
+                <div class="flex flex-1 flex-col overflow-hidden" x-show="expanded" x-transition>
+                    <span class="truncate text-sm font-semibold capitalize text-slate-800">
+                        {{ $this->User()->name }}
+                    </span>
+                    <span class="truncate text-xs capitalize text-slate-400">
+                        {{ $this->User()->role ?? 'Membro' }}
+                    </span>
+                </div>
+            @endif
+
+            <button type="button" wire:click="logout" wire:confirm="Deseja realmente sair?"
+                class="cursor-pointer p-1 text-slate-400 transition-colors hover:text-[#4e1c53]">
                 <i class="bi bi-box-arrow-right text-2xl"></i>
             </button>
         </div>
