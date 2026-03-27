@@ -16,6 +16,8 @@ class Enterprise extends Model
         'cnpj',
         'expires_at',
         'is_active',
+        'number',
+        'address',
     ];
 
     protected $casts = [

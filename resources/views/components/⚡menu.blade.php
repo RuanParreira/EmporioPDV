@@ -104,18 +104,21 @@ new class extends Component {
             <i class="bi bi-wallet shrink-0 text-xl"></i>
             <span class="whitespace-nowrap text-sm font-medium" x-show="expanded">Vendas</span>
         </a>
+        {{-- Configuração --}}
+        @can('update', $this->User()->enterprise)
+            <hr class="mx-3 my-3 border-slate-200">
 
-        {{-- implementação futuras --}}
-        {{-- Configurações --}}
-        {{-- <hr class="my-3 border-slate-200 mx-3">
+            <a href="{{ route('config') }}" wire:navigate @class([
+                'item-menu flex items-center gap-3',
+                'item-menu-active' => request()->routeIs('config'),
+            ])
+                :class="expanded ? 'justify-start px-3' : 'justify-center px-0'">
+                <i class="bi bi-gear shrink-0 text-xl"></i>
+                <span class="whitespace-nowrap text-sm font-medium" x-show="expanded">Configurações</span>
+            </a>
+        @endcan
 
-        <a href="{{ route('config') }}" wire:navigate @class([
-            'item-menu',
-            'item-menu-active' => request()->routeIs('config'),
-        ])>
-            <i class="bi bi-gear text-xl"></i>
-            <span class="font-medium text-sm">Configurações</span>
-        </a> --}}
+
 
     </nav>
 

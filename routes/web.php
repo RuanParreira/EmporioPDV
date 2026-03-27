@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Models\Category;
+use App\Models\Enterprise;
 use App\Models\Sale;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -17,7 +18,7 @@ Route::middleware('auth')->group(function () {
     Route::livewire('/products', 'pages.products')->name('products');
     Route::livewire('/users', 'pages.users')->middleware('can:viewAny,' . User::class)->name('users');
     Route::livewire('/sales', 'pages.sales')->name('sales');
-    Route::livewire('/config', 'pages.config')->name('config');
+    Route::livewire('/config', 'pages.config')->middleware('can:manageConfig,' . Enterprise::class)->name('config');
     Route::get('/imprimir-recibo/{sale}', function (Sale $sale) {
         $sale->load('items');
         return view('print.receipt', compact('sale'));
