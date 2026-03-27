@@ -13,7 +13,7 @@ class SalePolicy
      */
     public function viewAny(User $user): bool
     {
-        return in_array($user->role, ['admin', 'owner']);
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class SalePolicy
      */
     public function view(User $user, Sale $sale): bool
     {
-        return false;
+        return $user->enterprise_id === $sale->enterprise_id;
     }
 
     /**
@@ -45,7 +45,8 @@ class SalePolicy
      */
     public function delete(User $user, Sale $sale): bool
     {
-        return in_array($user->role, ['admin', 'owner']);
+        return in_array($user->role, ['admin', 'owner'])
+            && $user->enterprise_id === $sale->enterprise_id;
     }
 
     /**

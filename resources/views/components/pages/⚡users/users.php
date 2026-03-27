@@ -18,7 +18,12 @@ new #[Layout('layouts.default')] #[Title('Lista de Usuários')] class extends Co
     #[Computed]
     public function users()
     {
-        return User::query()->where('role', '!=', 'dev')->orderByDesc('id')->paginate(9);
+        $query = User::query()->where('role', '!=', 'dev')->orderByDesc('id');
+        if (Auth::user()->enterprise_id) {
+            $query->where('enterprise_id', Auth::user()->enterprise_id);
+        }
+
+        return $query->paginate(9);
     }
 
     // Deletar um user
@@ -32,5 +37,6 @@ new #[Layout('layouts.default')] #[Title('Lista de Usuários')] class extends Co
         }
 
         $user->delete();
+        $this->dispatch('notify', title: 'Sucesso!', message: 'Usuário deletado com sucesso.', type: 'success');
     }
 };

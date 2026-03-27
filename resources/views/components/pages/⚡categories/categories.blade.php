@@ -76,8 +76,8 @@
                     <h3 class="font-bold capitalize">{{ $category->name }}</h3>
                     <p class="text-description flex items-center gap-1 text-xs">
                         <i class="bi bi-box-seam"></i>
-                        {{ $category->products_count ?? 0 }}
-                        {{ $category->products_count ?? 0 === 1 ? 'produto' : 'produtos' }}
+                        {{ $category->products_count }}
+                        {{ $category->products_count === 1 ? 'produto' : 'produtos' }}
                     </p>
                 </div>
                 <div class="flex">

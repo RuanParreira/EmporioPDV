@@ -23,12 +23,9 @@
                     <th class="text-right">
                         pagamento
                     </th>
-                    @can('viewAny', App\Models\Sale::class)
-                        <th class="text-right">
-                            ações
-                        </th>
-                    @endcan
-
+                    <th class="text-right">
+                        ações
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -91,22 +88,22 @@
                             </div>
                         </td>
 
-                        @can('delete', $sale)
-                            <td class="text-right">
-                                {{-- Botão: Ver Detalhes --}}
-                                <button type="button"
-                                    wire:click="$dispatch('open-sale-modal', { saleId: {{ $sale->id }} })"
-                                    class="edit-button" title="Ver Detalhes">
-                                    <i class="bi bi-eye"></i>
-                                </button>
 
-                                {{-- Botão: Imprimir Recibo --}}
-                                <button type="button"
-                                    wire:click="$dispatch('ask-to-print', { saleId: {{ $sale->id }} })"
-                                    class="edit-button" title="Imprimir Recibo">
-                                    <i class="bi bi-printer"></i>
-                                </button>
+                        <td class="text-right">
+                            {{-- Botão: Ver Detalhes --}}
+                            <button type="button"
+                                wire:click="$dispatch('open-sale-modal', { saleId: {{ $sale->id }} })"
+                                class="edit-button" title="Ver Detalhes">
+                                <i class="bi bi-eye"></i>
+                            </button>
 
+                            {{-- Botão: Imprimir Recibo --}}
+                            <button type="button"
+                                wire:click="$dispatch('ask-to-print', { saleId: {{ $sale->id }} })"
+                                class="edit-button" title="Imprimir Recibo">
+                                <i class="bi bi-printer"></i>
+                            </button>
+                            @can('delete', $sale)
                                 {{-- Botão: Deletar --}}
                                 <button type="button" wire:click="delete({{ $sale->id }})"
                                     wire:confirm='Você tem certeza que deseja apagar essa venda?' class="delete-button">

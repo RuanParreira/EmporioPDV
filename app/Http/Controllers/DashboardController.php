@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Sale;
 use App\Models\SaleItem;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -35,8 +36,9 @@ class DashboardController extends Controller
         // Produto Mais Vendido
         $maisVendido = SaleItem::query()
             ->select('products.name', DB::raw('SUM(sale_items.quantity) as total_qtd'))
-            ->whereNotNull('sale_items.product_id')
             ->join('products', 'products.id', '=', 'sale_items.product_id')
+            ->where('products.enterprise_id', Auth::user()->enterprise_id)
+            ->whereNotNull('sale_items.product_id')
             ->groupBy('products.id', 'products.name')
             ->orderByDesc('total_qtd')
             ->first();

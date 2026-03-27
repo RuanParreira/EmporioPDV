@@ -48,7 +48,7 @@
             <tbody>
                 @forelse ($this->products as $product)
                     <tr wire:key="product-{{ $product->id }}"
-                        class="border-border/50 hover:bg-description/10 {{ $product->active ? 'hover:bg-description/10' : 'bg-gray-50 opacity-60 hover:opacity-100 grayscale-[0.3]' }} border-b transition-colors">
+                        class="border-border/50 hover:bg-description/10 {{ $product->is_active ? 'hover:bg-description/10' : 'bg-gray-50 opacity-60 hover:opacity-100 grayscale-[0.3]' }} border-b transition-colors">
                         <td class="text-description">
                             #{{ $product->code ? str_pad($product->code, 3, '0', STR_PAD_LEFT) : 'N/F' }}
                         </td>
@@ -59,7 +59,7 @@
                                     {{ $product->name }}
                                 </span>
 
-                                @if (!$product->active)
+                                @if (!$product->is_active)
                                     <span
                                         class="ml-2 rounded-full border border-red-200 bg-red-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-red-600 shadow-sm">
                                         Desativado
@@ -90,10 +90,11 @@
                                     <i class="bi bi-trash3 text-md"></i>
                                 </button>
                                 <button type="button"
-                                    title="{{ $product->active ? 'Desativar Produto' : 'Ativar Produto' }}"
+                                    title="{{ $product->is_active ? 'Desativar Produto' : 'Ativar Produto' }}"
                                     wire:click="toggleActive({{ $product->id }})"
-                                    class="active-button {{ $product->active ? 'text-blue-500 hover:bg-blue-100 hover:text-blue-700' : 'text-gray-400 hover:bg-blue-100 hover:text-blue-600' }}">
-                                    <i class="{{ $product->active ? 'bi bi-toggle-on' : 'bi bi-toggle-off' }} text-xl"></i>
+                                    class="active-button {{ $product->is_active ? 'text-blue-500 hover:bg-blue-100 hover:text-blue-700' : 'text-gray-400 hover:bg-blue-100 hover:text-blue-600' }}">
+                                    <i
+                                        class="{{ $product->is_active ? 'bi bi-toggle-on' : 'bi bi-toggle-off' }} text-xl"></i>
                                 </button>
                             </td>
                         @endcan

@@ -20,9 +20,10 @@ new class extends Component {
 
     public function rules(): array
     {
+        $enterpriseId = Auth::user()->enterprise_id;
         return [
-            'name' => ['required', 'string', 'max:255', 'min:3', Rule::unique('products', 'name')->ignore($this->productId)],
-            'code' => ['nullable', 'integer', 'max_digits:3', Rule::unique('products', 'code')->ignore($this->productId)],
+            'name' => ['required', 'string', 'max:255', 'min:3', Rule::unique('products', 'name')->where('enterprise_id', $enterpriseId)->ignore($this->productId)],
+            'code' => ['nullable', 'integer', 'max_digits:3', Rule::unique('products', 'code')->where('enterprise_id', $enterpriseId)->ignore($this->productId)],
             'price' => 'required|numeric|min:0',
             'category_id' => 'nullable|exists:categories,id',
             'measure_unit' => 'required|in:UN,KG',
@@ -92,6 +93,7 @@ new class extends Component {
 
     public function save(): void
     {
+        $this->price = str_replace(',', '.', $this->price);
         $this->validate();
 
         if ($this->productId) {
@@ -116,7 +118,7 @@ new class extends Component {
                 'price' => (float) $this->price,
                 'category_id' => $this->category_id,
                 'measure_unit' => $this->measure_unit,
-                'active' => true,
+                'is_active' => true,
             ]);
 
             $this->dispatch('notify', title: 'Sucesso!', message: 'Produto criado com sucesso!', type: 'success');

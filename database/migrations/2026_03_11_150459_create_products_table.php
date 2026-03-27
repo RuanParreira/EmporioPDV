@@ -13,16 +13,15 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 3)->nullable()
-                ->unique();
-            $table->foreignId('category_id')->nullable()
-                ->constrained('categories') //Relacionamento do ID
-                ->nullOnDelete();
+            $table->foreignId('enterprise_id')->constrained()->cascadeOnDelete();
+            $table->string('code', 3)->nullable();
+            $table->unique(['enterprise_id', 'code']);
+            $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();
             $table->string('name');
-            $table->text('description')->nullable();
-            $table->decimal('price', 10, 2); // 10 dígitos totais, 2 casas decimais
-            $table->string('measure_unit', 2)->default('UN'); // UN ou KG
-            $table->boolean('active')->default(true); // Produto começa ativo
+            $table->unique(['enterprise_id', 'name']);
+            $table->decimal('price', 10, 2);
+            $table->string('measure_unit', 2)->default('UN');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

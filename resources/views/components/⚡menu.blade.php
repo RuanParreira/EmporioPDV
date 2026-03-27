@@ -33,7 +33,8 @@ new class extends Component {
             <img src="{{ asset('images/logo.png') }}" alt="Logo da Empresa" class="object-contain">
         </div>
         <div class="flex flex-col overflow-hidden" x-show="expanded" x-transition>
-            <span class="whitespace-nowrap text-base font-bold leading-tight text-[#4e1c53]">Empório do Açaí</span>
+            <span
+                class="whitespace-nowrap text-base font-bold leading-tight text-[#4e1c53]">{{ $this->User()->enterprise->name ?? 'Dev' }}</span>
             <span class="whitespace-nowrap text-xs font-medium text-slate-400">Painel de Navegação</span>
         </div>
     </div>

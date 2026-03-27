@@ -35,7 +35,7 @@ new #[Layout('layouts.default')] #[Title('Caixa')] class extends Component {
     {
         return Product::query()
             ->with('category')
-            ->where('active', true)
+            ->where('is_active', true)
             ->when($this->search, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
             })
@@ -49,7 +49,7 @@ new #[Layout('layouts.default')] #[Title('Caixa')] class extends Component {
     {
         if (!empty($this->searchId)) {
             $product = Product::where('code', $this->searchId)
-                ->where('active', true)
+                ->where('is_active', true)
                 ->first();
 
             if ($product) {

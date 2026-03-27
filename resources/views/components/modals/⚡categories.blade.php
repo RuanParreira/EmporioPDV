@@ -4,6 +4,7 @@ use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Models\Category;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
 new class extends Component {
     public bool $showModal = false;
@@ -29,18 +30,26 @@ new class extends Component {
         $this->showModal = true;
     }
 
+    public function rules(): array
+    {
+        $enterpriseId = Auth::user()->enterprise_id;
+        return [
+            'name' => ['required', 'min:3', Rule::unique('categories', 'name')->where('enterprise_id', $enterpriseId)->ignore($this->categoryId)],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'Nome da categoria obrigatório',
+            'name.min' => 'O nome deve ter no minimo 3 caracteres',
+            'name.unique' => 'O nome já está sendo utilizado',
+        ];
+    }
+
     public function save(): void
     {
-        $this->validate(
-            [
-                'name' => 'required|min:3|unique:categories,name,' . $this->categoryId,
-            ],
-            [
-                'name.required' => 'Nome Obrigatório',
-                'name.min' => 'Precisa ter no minimo 3 caracter',
-                'name.unique' => 'Essa categoria já existe',
-            ],
-        );
+        $this->validate();
 
         if ($this->categoryId) {
             $category = Category::findOrFail($this->categoryId);
@@ -77,11 +86,12 @@ new class extends Component {
         x-transition:enter-start="opacity-0 scale-95 translate-y-4"
         x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-50"
         x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-        x-transition:leave-end="opacity-0 scale-95 translate-y-4" class="modal max-w-sm">
+        x-transition:leave-end="opacity-0 scale-95 translate-y-4" class="modal max-w-md">
 
         <div class="mb-4 flex items-center justify-between">
             <h3 class="text-lg font-bold">
-                <i class="bi bi-bag-plus text-primary"></i> Nova Categoria
+                <i class="bi bi-bag-plus text-primary"></i>
+                {{ $categoryId ? 'Editar Categoria' : 'Nova Categoria' }}
             </h3>
             <button type="button" @click="open = false" class="cursor-pointer text-gray-400 hover:text-gray-600">
                 <i class="bi bi-x-lg"></i>
@@ -100,7 +110,7 @@ new class extends Component {
                     @enderror
                 </div>
                 <div class="flex gap-3">
-                    <button type="submit" wire:loading.attr"disable" wire:target="save" class="modal-button">
+                    <button type="submit" wire:loading.attr="disabled" wire:target="save" class="modal-button">
                         <span wire:loading.remove wire:target="save">
                             Salvar
                         </span>

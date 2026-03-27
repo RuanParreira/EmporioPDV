@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users'); //ID do vendedor
+            $table->foreignId('enterprise_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->decimal('total_value', 10, 2);
             $table->string('payment_method');
             $table->decimal('received_value', 10, 2)->nullable();

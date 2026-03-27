@@ -37,7 +37,8 @@ class CategoryPolicy
      */
     public function update(User $user, Category $category): bool
     {
-        return in_array($user->role, ['admin', 'owner']);
+        return in_array($user->role, ['admin', 'owner'])
+            && $user->enterprise_id === $category->enterprise_id;
     }
 
     /**
@@ -45,7 +46,8 @@ class CategoryPolicy
      */
     public function delete(User $user, Category $category): bool
     {
-        return in_array($user->role, ['admin', 'owner']);
+        return in_array($user->role, ['admin', 'owner'])
+            && $user->enterprise_id === $category->enterprise_id;
     }
 
     /**

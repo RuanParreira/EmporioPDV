@@ -6,26 +6,24 @@ use App\Traits\BelongsToEnterprise;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Category extends Model
+class Payment extends Model
 {
     use HasFactory, BelongsToEnterprise;
 
     protected $fillable = [
         'enterprise_id',
-        'name'
+        'value',
+        'paid_at',
     ];
 
-    // A Categoria PERTENCE A uma empresa
+    protected $casts = [
+        'value' => 'decimal:2',
+        'paid_at' => 'datetime',
+    ];
+
     public function enterprise(): BelongsTo
     {
         return $this->belongsTo(Enterprise::class);
-    }
-
-    // Uma Categoria TEM MUITOS produtos
-    public function products(): HasMany
-    {
-        return $this->hasMany(Product::class);
     }
 }

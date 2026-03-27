@@ -36,6 +36,11 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
+        // Garante que o usuário só possa editar usuários da mesma empresa
+        if ($user->enterprise_id !== $model->enterprise_id) {
+            return false;
+        }
+
         if ($model->role === 'dev') {
             return false;
         }
@@ -56,6 +61,11 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
+        // Garante que o usuário só possa deletar usuários da mesma empresa
+        if ($user->enterprise_id !== $model->enterprise_id) {
+            return false;
+        }
+
         if ($model->role === 'dev') {
             return false;
         }

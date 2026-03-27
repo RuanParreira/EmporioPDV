@@ -46,7 +46,7 @@ new #[Layout('layouts.default')] #[Title('Lista de Produtos')] class extends Com
         Gate::authorize('update', $product);
 
         $product->update([
-            'active' => !$product->active
+            'is_active' => !$product->is_active
         ]);
     }
 };

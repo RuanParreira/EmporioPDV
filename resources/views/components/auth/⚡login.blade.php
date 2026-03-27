@@ -86,7 +86,25 @@ new #[Title('EmporioCaixa')] class extends Component {
                 </div>
             </div>
             @error('credentials')
-                <span class="flex items-center justify-center text-center text-red-700">{{ $message }}</span>
+                <span x-data="{
+                    message: '{{ addslashes($message) }}',
+                    seconds: (() => {
+                        const match = '{{ $message }}'.match(/(\d+)\s*segundos?/);
+                        return match ? parseInt(match[1]) : null;
+                    })(),
+                    interval: null
+                }" x-init="if (seconds) {
+                    interval = setInterval(() => {
+                        if (seconds > 1) {
+                            seconds--;
+                            message = `Muitas tentativas de login. Tente novamente em ${seconds} segundos.`;
+                        } else {
+                            clearInterval(interval);
+                            message = 'Você pode tentar novamente.';
+                        }
+                    }, 1000);
+                }" x-text="message"
+                    class="flex items-center justify-center text-center text-red-700"></span>
             @enderror
             <form wire:submit="login" class="space-y-4">
                 <div class="space-y-2">

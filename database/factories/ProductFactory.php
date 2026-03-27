@@ -22,10 +22,9 @@ class ProductFactory extends Factory
             'category_id' => null,
             'code' => $this->faker->unique()->numberBetween(1, 999),
             'name' => ucfirst($this->faker->unique()->word()),
-            'description' => $this->faker->sentence(),
             'price' => $this->faker->randomFloat(2, 5, 200),
             'measure_unit' => $this->faker->randomElement(['UN', 'KG']),
-            'active' => $this->faker->boolean(90)
+            'is_active' => $this->faker->boolean(90)
         ];
     }
 }

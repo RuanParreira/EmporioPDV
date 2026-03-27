@@ -94,10 +94,10 @@
 
     <div class="ticket">
         <div class="mb-2 text-left">
-            <h2 class="bold text-center" style="margin: 0; font-size: 16px;">Emporio Do Açaí</h2>
-            <p style="margin: 2px 0;">Avenida Claudino Barretos Rios, N° 7 - Centro</p>
-            <p style="margin: 2px 0;">CNPJ: 65.468.243/0001-02</p>
-            <p style="margin: 2px 0;">Tel: (77) 8166-2230</p>
+            <h2 class="bold text-center" style="margin: 0; font-size: 16px;">{{ $sale->enterprise->name }}</h2>
+            <p style="margin: 2px 0;">{{ $sale->enterprise->address }}</p>
+            <p style="margin: 2px 0;">CNPJ: {{ $sale->enterprise->formatted_cnpj }}</p>
+            <p style="margin: 2px 0;">Tel: {{ $sale->enterprise->formatted_number }}</p>
         </div>
 
         <div class="divider"></div>

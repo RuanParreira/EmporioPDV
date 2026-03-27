@@ -111,6 +111,7 @@ new class extends Component {
             Gate::authorize('create', User::class);
 
             User::create([
+                'enterprise_id' => Auth::user()->enterprise_id,
                 'name' => $this->name,
                 'email' => $this->email,
                 'password' => Hash::make($this->password),

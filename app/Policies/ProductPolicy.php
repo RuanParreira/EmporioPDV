@@ -37,7 +37,8 @@ class ProductPolicy
      */
     public function update(User $user, Product $product): bool
     {
-        return in_array($user->role, ['admin', 'owner']);
+        return in_array($user->role, ['admin', 'owner'])
+            && $user->enterprise_id === $product->enterprise_id;
     }
 
     /**
@@ -45,7 +46,8 @@ class ProductPolicy
      */
     public function delete(User $user, Product $product): bool
     {
-        return in_array($user->role, ['admin', 'owner']);
+        return in_array($user->role, ['admin', 'owner'])
+            && $user->enterprise_id === $product->enterprise_id;
     }
 
     /**

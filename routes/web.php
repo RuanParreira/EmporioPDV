@@ -4,7 +4,6 @@ use App\Http\Controllers\DashboardController;
 use App\Models\Category;
 use App\Models\Sale;
 use App\Models\User;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 
 // Rota de Login
@@ -20,8 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::livewire('/sales', 'pages.sales')->name('sales');
     Route::livewire('/config', 'pages.config')->name('config');
     Route::get('/imprimir-recibo/{sale}', function (Sale $sale) {
-        Gate::authorize('view', $sale);
         $sale->load('items');
         return view('print.receipt', compact('sale'));
-    })->name('print.receipt');
+    })->name('print.receipt')->middleware('can:view,sale')->name('imprimir-recibo');
 });
