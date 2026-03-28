@@ -39,6 +39,7 @@ new #[Layout('layouts.default')] #[Title('Lista de Produtos')] class extends Com
         Gate::authorize('delete', $product);
 
         $product->delete();
+        $this->dispatch('notify', title: 'Sucesso!', message: 'Produto deletado com sucesso!', type: 'success');
     }
 
     public function toggleActive(Product $product): void
@@ -48,5 +49,14 @@ new #[Layout('layouts.default')] #[Title('Lista de Produtos')] class extends Com
         $product->update([
             'is_active' => !$product->is_active
         ]);
+
+        $acao = $product->is_active ? 'ativado' : 'desativado';
+
+        $this->dispatch(
+            'notify',
+            title: 'Sucesso!',
+            message: "Produto {$acao} com sucesso!",
+            type: 'success'
+        );
     }
 };

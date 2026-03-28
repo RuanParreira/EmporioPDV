@@ -241,7 +241,10 @@ new class extends Component {
                 <button type="submit" wire:loading.attr="disabled" wire:target="save" class="modal-button">
                     <span wire:loading.remove
                         wire:target="save">{{ $userId ? 'Salvar Alterações' : 'Criar Usuário' }}</span>
-                    <span wire:loading wire:target="save">Salvando...</span>
+                    <span wire:loading wire:target="save">
+                        <i class="bi bi-arrow-repeat inline-block animate-spin"></i>
+                        Salvando...
+                    </span>
                 </button>
             </div>
         </form>

@@ -22,5 +22,6 @@ new #[Layout('layouts.default')] #[Title('Histórico de Vendas')] class extends 
         Gate::authorize('delete', $sale);
 
         $sale->delete();
+        $this->dispatch('notify', title: 'Sucesso!', message: 'Venda deletada com sucesso!', type: 'success');
     }
 };

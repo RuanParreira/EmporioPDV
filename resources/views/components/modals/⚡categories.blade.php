@@ -115,6 +115,7 @@ new class extends Component {
                             Salvar
                         </span>
                         <span wire:loading wire:target="save">
+                            <i class="bi bi-arrow-repeat inline-block animate-spin"></i>
                             Salvando...
                         </span>
                     </button>

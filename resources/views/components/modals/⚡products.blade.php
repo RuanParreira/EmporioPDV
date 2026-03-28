@@ -338,7 +338,10 @@ new class extends Component {
                     <span wire:loading.remove wire:target="save">
                         {{ $productId ? 'Atualizar Produto' : 'Criar Produto' }}
                     </span>
-                    <span wire:loading wire:target="save">Salvando...</span>
+                    <span wire:loading wire:target="save">
+                        <i class="bi bi-arrow-repeat inline-block animate-spin"></i>
+                        Salvando...
+                    </span>
                 </button>
             </div>
         </form>

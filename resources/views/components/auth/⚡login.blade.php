@@ -10,7 +10,6 @@ use Illuminate\Validation\ValidationException;
 new #[Title('EmporioCaixa')] class extends Component {
     public string $email = '';
     public string $password = '';
-    public bool $showPassword = false;
 
     protected function rules(): array
     {
@@ -44,7 +43,8 @@ new #[Title('EmporioCaixa')] class extends Component {
             return redirect()->intended('dashboard')->with('success', 'Logado com sucesso');
         }
 
-        RateLimiter::hit($this->throttleKey());
+        RateLimiter::hit($this->throttleKey(), 60);
+
         $this->dispatch('notify', title: 'Erro!', message: 'Email ou senha invalidos!', type: 'error');
         $this->password = '';
     }
@@ -86,25 +86,9 @@ new #[Title('EmporioCaixa')] class extends Component {
                 </div>
             </div>
             @error('credentials')
-                <span x-data="{
-                    message: '{{ addslashes($message) }}',
-                    seconds: (() => {
-                        const match = '{{ $message }}'.match(/(\d+)\s*segundos?/);
-                        return match ? parseInt(match[1]) : null;
-                    })(),
-                    interval: null
-                }" x-init="if (seconds) {
-                    interval = setInterval(() => {
-                        if (seconds > 1) {
-                            seconds--;
-                            message = `Muitas tentativas de login. Tente novamente em ${seconds} segundos.`;
-                        } else {
-                            clearInterval(interval);
-                            message = 'Você pode tentar novamente.';
-                        }
-                    }, 1000);
-                }" x-text="message"
-                    class="flex items-center justify-center text-center text-red-700"></span>
+                <span class="flex items-center justify-center text-center text-red-700">
+                    {{ $message }}
+                </span>
             @enderror
             <form wire:submit="login" class="space-y-4">
                 <div class="space-y-2">
@@ -121,34 +105,36 @@ new #[Title('EmporioCaixa')] class extends Component {
                         <span class="text-sm text-red-700">{{ $message }}</span>
                     @enderror
                 </div>
-                <div class="space-y-2">
+                <div class="space-y-2" x-data="{ show: false }">
                     <label for="password" class="text-primary text-sm font-semibold">
                         Senha
                     </label>
                     <div class="relative mt-1">
                         <i class="bi bi-lock text-primary absolute left-3 top-1/2 -translate-y-1/2"></i>
-                        <input type="{{ $showPassword ? 'text' : 'password' }}" id="password" name="password"
-                            wire:model="password"
+
+                        <input x-bind:type="show ? 'text' : 'password'" id="password" wire:model="password"
                             class="w-full rounded-md border border-gray-300 px-4 py-3 pl-10 pr-10 outline-none transition focus:border-transparent focus:ring-2 focus:ring-[#4A195C]"
                             placeholder="Digite sua senha">
 
-                        {{-- Botão com wire:click para alternar --}}
-                        <button type="button" wire:click="$toggle('showPassword')"
-                            class="hover:text-primary/60 text-primary absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer items-center justify-center">
-                            <i class="bi {{ $showPassword ? 'bi-eye-slash' : 'bi-eye' }} text-lg"></i>
+                        <button type="button" @click="show = !show"
+                            class="hover:text-primary/60 text-primary absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer items-center justify-center focus:outline-none">
+                            <i class="bi text-lg" :class="show ? 'bi-eye-slash' : 'bi-eye'"></i>
                         </button>
                     </div>
                     @error('password')
                         <span class="text-sm text-red-700">{{ $message }}</span>
                     @enderror
                 </div>
+
                 <button type="submit"
                     class="ring-offset-background focus-visible:ring-ring bg-primary hover:bg-primary/90 inline-flex h-12 w-full cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-xl px-4 py-2 text-base font-bold text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
                     <i class="bi bi-box-arrow-right text-lg" wire:loading.remove wire:target="login"></i>
                     <span class="text-lg" wire:loading.remove wire:target="login">
                         Entrar
                     </span>
-                    <span wire:loading wire:target="login" class="text-lg">Entrando...</span>
+                    <span wire:loading wire:target="login" class="text-lg">
+                        <i class="bi bi-arrow-repeat inline-block animate-spin"></i>
+                        Entrando...</span>
                 </button>
             </form>
         </div>

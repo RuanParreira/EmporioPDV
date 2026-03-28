@@ -53,7 +53,7 @@ new #[Layout('layouts.default')] #[Title('Lista de Categorias')] class extends C
         Gate::authorize('delete', $category);
 
         $category->delete();
-
         $this->loadStats();
+        $this->dispatch('notify', title: 'Sucesso!', message: 'Categoria deletada com sucesso!', type: 'success');
     }
 };

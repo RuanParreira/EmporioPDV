@@ -374,8 +374,12 @@ new class extends Component {
         </div>
         <button type="button" wire:click="checkout" wire:loading.attr="disabled" {{ empty($cart) ? 'disabled' : '' }}
             class="ring-offset-background focus-visible:ring-ring bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-14 w-full cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-xl px-4 py-2 font-extrabold text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
-            <i class="bi bi-check-circle"></i>
-            Finalizar Venda
+            <i class="bi bi-check-circle" wire:loading.remove wire:target="checkout"></i>
+            <span wire:loading.remove wire:target="checkout">Finalizar Venda</span>
+
+            <i class="bi bi-arrow-repeat inline-block animate-spin" wire:loading wire:target="checkout"
+                style="display: none;"></i>
+            <span wire:loading wire:target="checkout" style="display: none;">Finalizando...</span>
         </button>
     </div>
 </div>

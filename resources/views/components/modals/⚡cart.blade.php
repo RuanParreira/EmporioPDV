@@ -115,6 +115,7 @@ new class extends Component {
                             Confirmar
                         </span>
                         <span wire:loading wire:target="save">
+                            <i class="bi bi-arrow-repeat inline-block animate-spin"></i>
                             Confirmando...
                         </span>
                     </button>
