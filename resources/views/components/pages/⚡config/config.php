@@ -6,13 +6,21 @@ use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 use App\Rules\CnpjValidation;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Livewire\WithFileUploads;
 
 new #[Layout('layouts.default')] #[Title('Configurações da empresa')] class extends Component {
-    public ?string $name = null;
-    public ?string $number = null;
-    public ?string $address = null;
-    public ?string $cnpj = null;
+    use WithFileUploads;
+
+    public string $name = '';
+    public string $number = '';
+    public string $address = '';
+    public string $cnpj = '';
+
+    public $logo;
+    public ?string $currentLogo = null;
+    public bool $isEditing = false;
 
     public function mount()
     {
@@ -23,6 +31,17 @@ new #[Layout('layouts.default')] #[Title('Configurações da empresa')] class ex
             $this->number = $enterprise->number;
             $this->address = $enterprise->address;
             $this->cnpj = $enterprise->cnpj;
+            $this->currentLogo = $enterprise->logo;
+        }
+    }
+
+    public function toggleEdit(): void
+    {
+        $this->isEditing = !$this->isEditing;
+
+        if (!$this->isEditing) {
+            $this->resetErrorBag();
+            $this->mount();
         }
     }
 
@@ -38,9 +57,15 @@ new #[Layout('layouts.default')] #[Title('Configurações da empresa')] class ex
                 'max:255',
                 Rule::unique('enterprises', 'name')->ignore($enterpriseId),
             ],
-            'number' => ['nullable', 'string', 'max:20'],
-            'address' => ['nullable', 'string', 'max:255'],
-            'cnpj' => ['nullable', 'string', 'max:18', new CnpjValidation()],
+            'cnpj' => [
+                'required',
+                'string',
+                'max:18',
+                new CnpjValidation,
+                Rule::unique('enterprises', 'cnpj')->ignore($enterpriseId),
+            ],
+            'number' => ['required', 'string', 'max:20'],
+            'address' => ['required', 'string', 'max:255'],
         ];
     }
 
@@ -55,20 +80,34 @@ new #[Layout('layouts.default')] #[Title('Configurações da empresa')] class ex
             'name.unique' => 'Este nome de empresa já está registrado. Por favor, escolha outro.',
 
             // Mensagens para o campo 'number'
+            'number.required' => 'Número Obrigatório',
             'number.string' => 'O número deve ser um formato de texto válido.',
             'number.max' => 'O número não pode ter mais de 20 caracteres.',
 
             // Mensagens para o campo 'address'
+            'address.required' => 'Endereço Obrigatório',
             'address.string' => 'O endereço deve ser um texto válido.',
             'address.max' => 'O endereço não pode ultrapassar 255 caracteres.',
 
             // Mensagens para o campo 'cnpj'
+            'cnpj.required' => 'Cnpj Obrigatório',
+            'cnpj.unique' => 'Este CNPJ já está cadastrado para outra empresa.',
             'cnpj.string' => 'O CNPJ deve ser um texto válido.',
             'cnpj.max' => 'O CNPJ não pode ultrapassar 18 caracteres.',
+
+            //Mensagens para o campo 'image'
+            'logo.image' => 'Imagem invalida',
+            'logo.mimes' => 'Formato de imagem não suportado',
+            'logo.max' => 'A imagem é muito pesada',
         ];
     }
+
+    //Salvar informações da empresa
     public function save(): void
     {
+        $this->cnpj = preg_replace('/\D/', '', $this->cnpj);
+        $this->number = preg_replace('/\D/', '', $this->number);
+
         $this->validate();
 
         $enterprise = Auth::user()->enterprise;
@@ -76,20 +115,70 @@ new #[Layout('layouts.default')] #[Title('Configurações da empresa')] class ex
         if ($enterprise) {
             Gate::authorize('update', $enterprise);
 
-            $numberLimpo = preg_replace('/\D/', '', $this->number);
-            $cnpjLimpo = preg_replace('/\D/', '', $this->cnpj);
-
             $enterprise->update([
                 'name' => $this->name,
-                'number'  => $numberLimpo,
+                'number' => $this->number,
                 'address' => $this->address,
-                'cnpj'    => $cnpjLimpo,
+                'cnpj' => $this->cnpj,
             ]);
 
+            $this->isEditing = false;
+
             $this->dispatch('notify', title: 'Sucesso!', message: 'Empresa atualizada com sucesso!', type: 'success');
+            $this->dispatch('enterprise-updated');
             return;
         }
 
         $this->dispatch('notify', title: 'Erro!', message: 'Nenhuma empresa encontrada!', type: 'error');
+    }
+
+    // Salvar a logo
+    public function saveLogo(): void
+    {
+        $this->validate([
+            'logo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+        ]);
+
+        $enterprise = Auth::user()->enterprise;
+
+        if ($enterprise && $this->logo) {
+            Gate::authorize('update', $enterprise);
+
+            // Deleta a antiga se existir
+            if ($enterprise->logo) {
+                Storage::disk('public')->delete($enterprise->logo);
+            }
+
+            // Salva a nova
+            $path = $this->logo->store('logos', 'public');
+            $enterprise->update(['logo' => $path]);
+
+            $this->currentLogo = $path;
+            $this->logo = null;
+
+            $this->dispatch('notify', title: 'Sucesso!', message: 'Logo atualizada com sucesso!', type: 'success');
+            $this->dispatch('enterprise-updated');
+        }
+    }
+
+    // Deletar a logo
+    public function deleteLogo(): void
+    {
+        $enterprise = Auth::user()->enterprise;
+
+        if ($enterprise && $enterprise->logo) {
+            Storage::disk('public')->delete($enterprise->logo);
+
+            $enterprise->update(['logo' => null]);
+
+            $this->currentLogo = null;
+            $this->logo = null;
+
+            $this->dispatch('notify', title: 'Sucesso!', message: 'Logo removida com sucesso!', type: 'success');
+            $this->dispatch('enterprise-updated');
+        } else {
+            $this->logo = null;
+            $this->resetErrorBag();
+        }
     }
 };

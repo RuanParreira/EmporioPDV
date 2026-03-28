@@ -87,3 +87,35 @@
         @apply ring-offset-background focus-visible:ring-primary inline-flex h-10 w-10 cursor-pointer items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
     }
 }
+
+/* Scrollbar */
+@layer base {
+    /* Scrollbar Global */
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+        /* Usando a cor de fundo que você definiu no tema */
+        background-color: var(--color-background);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        /* Cor principal (Primary) com um pouco de transparência ou a cor pura */
+        background-color: var(--color-primary);
+        border-radius: 50px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        /* Escurece um pouco no hover (opcional) */
+        filter: brightness(0.8);
+        cursor: pointer;
+    }
+
+    /* Suporte para Firefox */
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-primary) var(--color-background);
+    }
+}

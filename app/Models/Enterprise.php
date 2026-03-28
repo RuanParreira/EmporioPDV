@@ -14,10 +14,11 @@ class Enterprise extends Model
     protected $fillable = [
         'name',
         'cnpj',
-        'expires_at',
-        'is_active',
         'number',
         'address',
+        'logo',
+        'is_active',
+        'expires_at',
     ];
 
     protected $casts = [
